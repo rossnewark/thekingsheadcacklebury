@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Menu, X } from 'lucide-react';
+import { useState } from 'react';
+import { MapPin, Phone, Mail, Clock, Facebook, Menu, X } from 'lucide-react';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -7,28 +7,28 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="relative h-screen md:h-[85vh] bg-cover bg-center" style={{
+      <div className="relative h-screen md:h-[100vh] bg-cover bg-center" style={{
         backgroundImage: 'url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=2074")',
         backgroundAttachment: 'fixed'
       }}>
         <div className="absolute inset-0 bg-black/40">
           <div className="container mx-auto px-4 py-6">
             <nav className="flex justify-between items-center relative z-50">
-            <div className="flex items-center gap-4">
-            <div className="bg-[#f3df63] rounded-full p-1 w-16 h-16 flex items-center justify-center overflow-hidden">
-              <img 
-                src="../public/kingshead_cacklebury_logo.svg"
-                alt="Kings Head Cacklebury Logo"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <h1 className="text-[#f3df63] text-3xl md:text-4xl font-bold leading-tight">
-              Kings Head<br/>Cacklebury
-            </h1>
-          </div>
+              <div className="flex items-center gap-4">
+                <div className="bg-[#f3df63] rounded-full p-1 w-16 h-16 flex items-center justify-center overflow-hidden">
+                  <img
+                    src="../public/kingshead_cacklebury_logo.svg"
+                    alt="Kings Head Cacklebury Logo"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <h1 className="text-[#f3df63] text-3xl md:text-4xl font-bold leading-tight">
+                  Kings Head<br />Cacklebury
+                </h1>
+              </div>
 
               {/* Mobile Menu Button */}
-              <button 
+              <button
                 className="md:hidden text-white p-2"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
@@ -63,8 +63,8 @@ function App() {
             <div className="mt-8 md:mt-10 max-w-4xl mx-auto text-center">
               <h2 className="text-[#f3df63] text-4xl md:text-5xl font-bold mb-4">Your Local Harvey's Pub Since 1850</h2>
               <p className="text-white text-xl md:text-2xl mb-4">Discover the charm of traditional Sussex hospitality at our historic Hailsham pub, where real ales flow, and home-cooked food warms the soul</p>
-              <a 
-                href="tel:01323440447" 
+              <a
+                href="tel:01323440447"
                 className="inline-flex items-center gap-2 bg-[#f3df63] text-black px-6 py-3 rounded-lg hover:bg-[#e6a648] transition-colors"
               >
                 <Phone className="w-5 h-5" />
@@ -76,7 +76,7 @@ function App() {
               {/* Opening Hours */}
               <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
                 <div className="p-[2px]">
-                  <img 
+                  <img
                     src="../public/standard_opening_hours.png"
                     alt="Opening Hours Blackboard"
                     className="w-full h-auto md:h-40 lg:h-[40vh] xl:h-[50vh] object-cover rounded-t-lg"
@@ -98,7 +98,7 @@ function App() {
               {/* Location with Pub Image */}
               <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
                 <div className="p-[2px]">
-                  <img 
+                  <img
                     src="../public/kingshead_cacklebury_pub_outside.jpg"
                     alt="Kings Head Cacklebury Exterior"
                     className="w-full h-auto min-h-[8rem] md:h-32 lg:h-[40vh] xl:h-[50vh] object-contain md:object-cover rounded-t-lg"
@@ -118,27 +118,33 @@ function App() {
               </div>
 
               {/* Contact */}
-              <div className="bg-white/95 p-6 rounded-lg shadow-xl backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-4">
-                  <Phone className="text-[#e6a648]" />
-                  <h2 className="text-black text-xl font-semibold">Contact Us</h2>
+              <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
+                <div className="p-[2px]">
+                  <img
+                    src="../public/contact_a_board.png"
+                    alt="Contact A-Board"
+                    className="w-full h-auto md:h-40 lg:h-40 xl:h-48 object-cover rounded-t-lg"
+                  />
                 </div>
-                <div className="text-gray-700 space-y-4">
-                  <a href="tel:01323440447" className="flex items-center gap-2 hover:text-[#e6a648]">
-                    <Phone className="w-4 h-4" />
-                    01323 440447
-                  </a>
-                  <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-[#e6a648]">
-                    <Mail className="w-4 h-4" />
-                    lisa.kingshead@hotmail.com
-                  </a>
-                  <div className="flex gap-4 mt-4">
-                    <a href="#" className="text-[#e6a648] hover:text-[#f3df63]">
-                      <Facebook className="w-6 h-6" />
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Phone className="text-[#e6a648]" />
+                    <h2 className="text-black text-xl font-semibold">Contact Us</h2>
+                  </div>
+                  <div className="text-gray-700 space-y-4">
+                    <a href="tel:01323440447" className="flex items-center gap-2 hover:text-[#e6a648]">
+                      <Phone className="w-4 h-4" />
+                      01323 440447
                     </a>
-                    <a href="#" className="text-[#e6a648] hover:text-[#f3df63]">
-                      <Instagram className="w-6 h-6" />
+                    <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-[#e6a648]">
+                      <Mail className="w-4 h-4" />
+                      lisa.kingshead@hotmail.com
                     </a>
+                    <div className="flex gap-4 mt-4">
+                      <a href="www.facebook.com/KingsHeadCacklebury" target="_blank" className="hover:text-[#e6a648]">
+                        <Facebook className="w-4 h-4" />facebook.com/KingsHeadCacklebury
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -153,7 +159,7 @@ function App() {
           <h2 className="text-4xl font-bold text-center mb-12">Famous Sunday Roasts</h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <img 
+              <img
                 src="https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&q=80&w=2070"
                 alt="Sunday Roast"
                 className="rounded-lg shadow-xl w-full h-[400px] object-cover"
@@ -187,7 +193,7 @@ function App() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Proud to Serve Harvey's Ales</h2>
               <p className="text-gray-700 text-lg mb-6">
-                As a proud Harvey's pub, we serve the finest selection of Sussex ales, 
+                As a proud Harvey's pub, we serve the finest selection of Sussex ales,
                 brewed in Lewes using traditional methods and local ingredients.
               </p>
               <p className="text-gray-700 text-lg">
@@ -196,7 +202,7 @@ function App() {
               </p>
             </div>
             <div>
-              <img 
+              <img
                 src="https://images.unsplash.com/photo-1584225064785-c62a8b43d148?auto=format&fit=crop&q=80&w=2074"
                 alt="Harvey's beer on tap"
                 className="rounded-lg shadow-xl w-full h-[400px] object-cover"
@@ -212,7 +218,7 @@ function App() {
           <h2 className="text-4xl font-bold text-center mb-12">What's On</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
-              <img 
+              <img
                 src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&q=80&w=2070"
                 alt="Sunday Roast"
                 className="w-full h-48 object-cover"
@@ -224,7 +230,7 @@ function App() {
               </div>
             </div>
             <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
-              <img 
+              <img
                 src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&q=80&w=2074"
                 alt="Pub Quiz"
                 className="w-full h-48 object-cover"
@@ -236,7 +242,7 @@ function App() {
               </div>
             </div>
             <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
-              <img 
+              <img
                 src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=2074"
                 alt="Live Music"
                 className="w-full h-48 object-cover"
@@ -258,8 +264,8 @@ function App() {
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <div className="bg-[#f3df63] rounded-full p-3 w-12 h-12 flex items-center justify-center">
-                  <img 
-                    src="https://raw.githubusercontent.com/your-username/your-repo/main/logo.png" 
+                  <img
+                    src="https://raw.githubusercontent.com/your-username/your-repo/main/logo.png"
                     alt="Kings Head Logo"
                     className="w-8 h-8"
                   />
@@ -301,11 +307,9 @@ function App() {
             <div>
               <h3 className="text-black text-xl font-semibold mb-4">Follow Us</h3>
               <div className="flex gap-4">
-                <a href="#" className="text-white hover:text-black">
+                <a href="www.facebook.com/KingsHeadCacklebury" target="_blank" className="text-white hover:text-black">
                   <Facebook className="w-6 h-6" />
-                </a>
-                <a href="#" className="text-white hover:text-black">
-                  <Instagram className="w-6 h-6" />
+                  facebook.com/KingsHeadCacklebury
                 </a>
               </div>
             </div>
