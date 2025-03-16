@@ -14,18 +14,18 @@ function App() {
         <div className="absolute inset-0 bg-black/40">
           <div className="container mx-auto px-4 py-6">
             <nav className="flex justify-between items-center relative z-50">
-              <div className="flex items-center gap-4">
-                <div className="bg-[#f3df63] rounded-full p-4 w-16 h-16 flex items-center justify-center">
-                  <img 
-                    src="https://raw.githubusercontent.com/your-username/your-repo/main/logo.png" 
-                    alt="Kings Head Logo"
-                    className="w-12 h-12"
-                  />
-                </div>
-                <h1 className="text-[#f3df63] text-3xl md:text-4xl font-bold leading-tight">
-                  Kings Head<br/>Cacklebury
-                </h1>
-              </div>
+            <div className="flex items-center gap-4">
+            <div className="bg-[#f3df63] rounded-full p-1 w-16 h-16 flex items-center justify-center overflow-hidden">
+              <img 
+                src="../public/kingshead_cacklebury_logo.svg"
+                alt="Kings Head Cacklebury Logo"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <h1 className="text-[#f3df63] text-3xl md:text-4xl font-bold leading-tight">
+              Kings Head<br/>Cacklebury
+            </h1>
+          </div>
 
               {/* Mobile Menu Button */}
               <button 
@@ -60,39 +60,50 @@ function App() {
               </div>
             </nav>
 
-            <div className="mt-12 md:mt-16 max-w-4xl mx-auto text-center">
-              <h2 className="text-[#f3df63] text-4xl md:text-5xl font-bold mb-6">Your Local Harvey's Pub Since 1850</h2>
-              <p className="text-white text-xl md:text-2xl mb-8">Experience traditional Sussex hospitality, real ales, and home-cooked food in our historic Hailsham pub</p>
+            <div className="mt-8 md:mt-10 max-w-4xl mx-auto text-center">
+              <h2 className="text-[#f3df63] text-4xl md:text-5xl font-bold mb-4">Your Local Harvey's Pub Since 1850</h2>
+              <p className="text-white text-xl md:text-2xl mb-4">Discover the charm of traditional Sussex hospitality at our historic Hailsham pub, where real ales flow, and home-cooked food warms the soul</p>
               <a 
                 href="tel:01323440447" 
                 className="inline-flex items-center gap-2 bg-[#f3df63] text-black px-6 py-3 rounded-lg hover:bg-[#e6a648] transition-colors"
               >
                 <Phone className="w-5 h-5" />
-                Call to Book: 01323 440447
+                Get in touch with us: 01323 440447
               </a>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 mt-8">
               {/* Opening Hours */}
-              <div className="bg-white/95 p-6 rounded-lg shadow-xl backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-4">
-                  <Clock className="text-[#e6a648]" />
-                  <h2 className="text-black text-xl font-semibold">Opening Hours</h2>
+              <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
+                <div className="p-[2px]">
+                  <img 
+                    src="../public/standard_opening_hours.png"
+                    alt="Opening Hours Blackboard"
+                    className="w-full h-auto md:h-40 lg:h-[40vh] xl:h-[50vh] object-cover rounded-t-lg"
+                  />
                 </div>
-                <div className="text-gray-700 space-y-2">
-                  <p>Mon-Wed: 4pm - 11pm</p>
-                  <p>Thu-Fri: 2pm - 11pm</p>
-                  <p>Sat-Sun: 12pm - 11pm</p>
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Clock className="text-[#e6a648]" />
+                    <h2 className="text-black text-xl font-semibold">Opening Hours</h2>
+                  </div>
+                  <div className="text-gray-700 space-y-2">
+                    <p>Mon-Wed: 4pm - 11pm</p>
+                    <p>Thu-Fri: 2pm - 11pm</p>
+                    <p>Sat-Sun: 12pm - 11pm</p>
+                  </div>
                 </div>
               </div>
 
               {/* Location with Pub Image */}
               <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
-                <img 
-                  src="https://example.com/pub-exterior.jpg" 
-                  alt="Kings Head Cacklebury Exterior"
-                  className="w-full h-32 object-cover"
-                />
+                <div className="p-[2px]">
+                  <img 
+                    src="../public/kingshead_cacklebury_pub_outside.jpg"
+                    alt="Kings Head Cacklebury Exterior"
+                    className="w-full h-auto min-h-[8rem] md:h-32 lg:h-[40vh] xl:h-[50vh] object-contain md:object-cover rounded-t-lg"
+                  />
+                </div>
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <MapPin className="text-[#e6a648]" />
