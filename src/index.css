@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Balthazar&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply text-gray-900;
+  font-family: 'Balthazar', serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Balthazar', serif;
+}
