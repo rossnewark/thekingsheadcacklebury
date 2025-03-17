@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MapPin, Phone, Mail, Clock, Facebook, Menu, X } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -71,6 +75,12 @@ function App() {
     }, 500);
   };
 
+  const foodImages = [
+    "/roast_lunch.jpg",
+    "/roast_with_mum.jpg",
+    ];
+
+
   return (
     <div className="min-h-screen bg-white">
       {/* Sticky Header */}
@@ -136,13 +146,12 @@ function App() {
         </div>
       </div>
 
-     {/* Hero Section */}
-     <div className="relative flex flex-col justify-center bg-cover bg-center py-20 md:py-28" style={{
+      {/* Hero Section */}
+      <div className="relative flex flex-col justify-center bg-cover bg-center h-[1505px] sm:h-[1480px] md:h-[700px] lg:h-[760px]" 
+      style={{
         backgroundImage: 'url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=2074")',
         backgroundAttachment: 'fixed',
-        minHeight: '120vh', // Taller on all screens
-        height: 'auto',
-        paddingBottom: '36rem' // Dramatically increased padding for mobile
+        width: '100%',
       }}>
         <div className="absolute inset-0 bg-black/40">
           <div className="container mx-auto px-4 py-6">
@@ -159,8 +168,7 @@ function App() {
                 </a>
               </div>
 
-              {/* Move cards to container with negative margin for better positioning */}
-              <div className="relative z-10 mt-16 md:mt-12">
+              <div className="relative z-10 mt-6">
                 <div className="grid md:grid-cols-3 gap-6">
                   {/* Opening Hours */}
                   <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
@@ -250,22 +258,39 @@ function App() {
         </div>
       </div>
 
-      {/* Food & Drink Section - Added margin-top for consistent spacing */}
-      <section id="food" className="py-16 bg-white mt-[38rem] sm:mt-[36rem] md:mt-48 lg:mt-32">
+   
+      <section id="food" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Famous Sunday Roasts</h2>
+
           <div className="grid md:grid-cols-2 gap-12 items-center">
+
+            {/* Swiper Slider */}
             <div>
-              <img
-                src="/roast_lunch.jpg"
-                alt="Sunday Roast"
-                className="rounded-lg shadow-xl w-full h-[400px] object-cover"
-              />
+              <Swiper
+                modules={[Autoplay, Pagination]}
+                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                loop={true}
+                className="rounded-lg shadow-xl"
+             
+              >
+                {foodImages.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <img 
+                      src={image} 
+                      alt={`Slide ${index + 1}`} 
+                      className="w-full h-[600px] object-cover object-bottom rounded-lg" />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
+
+            {/* Roast Details */}
             <div>
               <h3 className="text-2xl font-semibold mb-4">Join Us Every Sunday</h3>
               <p className="text-lg text-gray-700 mb-6">
-                Our Sunday roasts are legendary in Hailsham. Choose from succulent roast beef, tender pork, delicous chicken or our vegetarian option,
+                Our Sunday roasts are legendary in Hailsham. Choose from succulent roast beef, tender pork, delicious chicken, or our vegetarian option,
                 all served with crispy roast potatoes, Yorkshire pudding's, seasonal vegetables, and rich gravy.
               </p>
               <div className="bg-[#f3df63]/10 p-6 rounded-lg">
