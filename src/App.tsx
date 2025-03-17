@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, Phone, Mail, Clock, Facebook, Menu, X } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
@@ -81,11 +81,16 @@ function App() {
     "/customers_enjoying_a_roast.jpg",
   ];
 
+  const harveysImages = [
+    "/harveys_pumps.jpg",
+    "/harveys_pale.jpg",
+    "/harveys_best.jpg",
+  ];
 
   return (
     <div className="min-h-screen bg-white">
       {/* Sticky Header */}
-      <div className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-[#f3df63]' : ''}`}>
+      <div className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-[#f3df63] border-t-4 border-b-4 border-[#e6a648]' : ''}`}>
         <div className="container mx-auto px-4">
           <nav className={`flex justify-between items-center transition-all duration-300 ${isScrolled ? 'py-2' : 'py-4'}`}>
             <div className="flex items-center gap-4">
@@ -123,14 +128,30 @@ function App() {
             {/* Mobile Menu */}
             {isMenuOpen && (
               <div className="absolute top-full right-0 w-64 bg-white rounded-lg shadow-xl py-4 md:hidden">
-                <a href="#about" className="block px-6 py-2 hover:bg-[#f3df63]/10">About</a>
-                <a href="#food" className="block px-6 py-2 hover:bg-[#f3df63]/10">Food</a>
+                <a href="#food" className="block px-6 py-2 hover:bg-[#f3df63]/10">Sunday Lunch</a>
+                <a href="#harveys" className="block px-6 py-2 hover:bg-[#f3df63]/10">Harvey's Ales</a>
                 <a href="#events" className="block px-6 py-2 hover:bg-[#f3df63]/10">Events</a>
-                <a href="#contact" className="block px-6 py-2 hover:bg-[#f3df63]/10">Contact</a>
                 <div className="px-6 py-4 border-t border-gray-200">
                   <a href="tel:01323440447" className="flex items-center gap-2 text-[#e6a648]">
                     <Phone className="w-4 h-4" />
                     01323 440447
+                  </a>
+                </div>
+                <div className="px-6 py-4 border-t border-gray-200">
+                  <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
+                    <Mail className="w-4 h-4" />
+                    lisa.kingshead@hotmail.com
+                  </a>
+                </div>
+                <div className="px-6 py-4 border-t border-gray-200">
+                  <a
+                    href="https://www.facebook.com/KingsHeadCacklebury"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
+                  >
+                    <Facebook className="w-4 h-4" />
+                    <span className="leading-none break-all">facebook.com/KingsHeadCacklebury</span>
                   </a>
                 </div>
               </div>
@@ -150,7 +171,7 @@ function App() {
       {/* Hero Section */}
       <div className="relative flex flex-col justify-center bg-cover bg-center h-[1505px] sm:h-[1480px] md:h-[700px] lg:h-[760px]"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=2074")',
+          backgroundImage: 'url("/bar.jpg")',
           backgroundAttachment: 'fixed',
           width: '100%',
         }}>
@@ -219,8 +240,8 @@ function App() {
                   <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
                     <div className="p-[2px]">
                       <img
-                        src="../public/contact_a_board.png"
-                        alt="Contact A-Board"
+                        src="/pete.jpg"
+                        alt="Contact Us"
                         className="w-full h-48 sm:h-48 md:h-40 lg:h-64 object-cover rounded-t-lg"
                       />
                     </div>
@@ -234,7 +255,7 @@ function App() {
                           <Phone className="w-4 h-4" />
                           01323 440447
                         </a>
-                        <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-[#e6a648]">
+                        <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
                           <Mail className="w-4 h-4" />
                           lisa.kingshead@hotmail.com
                         </a>
@@ -243,10 +264,10 @@ function App() {
                             href="https://www.facebook.com/KingsHeadCacklebury"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 hover:text-[#e6a648]"
+                            className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
                           >
                             <Facebook className="w-4 h-4" />
-                            <span className="leading-none">facebook.com/KingsHeadCacklebury</span>
+                            <span className="leading-none break-all">facebook.com/KingsHeadCacklebury</span>
                           </a>
                         </div>
                       </div>
@@ -265,7 +286,7 @@ function App() {
           <h2 className="text-4xl font-bold text-center mb-8">Our Legendary Sunday Roasts</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-            {/* Swiper Slider - Adjusted for better mobile display */}
+            {/* Swiper Slider - Food */}
             <div className="w-full overflow-hidden">
               <Swiper
                 modules={[Autoplay, Pagination]}
@@ -330,11 +351,11 @@ function App() {
       </section>
 
       {/* Harvey's Section */}
-      <section className="py-8 bg-[#f3df63]/10">
+      <section id="harveys" className="py-8 bg-[#f3df63]/10">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-            <h2 className="text-4xl font-bold text-center mb-4">Proud to serve Harvey's Ales</h2>
+              <h2 className="text-4xl font-bold text-center mb-4">Proud to serve Harvey's Ales</h2>
               <p className="text-gray-700 text-lg">
                 As a proud Harvey's pub, we serve the finest selection of Sussex ales,
                 brewed in Lewes using traditional methods and local ingredients.
@@ -344,12 +365,27 @@ function App() {
                 experience the authentic taste of Sussex in every pint.
               </p>
             </div>
-            <div>
-              <img
-                src="/harveys_pumps.jpg"
-                alt="Harvey's beer on tap"
-                className="rounded-lg shadow-xl w-full h-[400px] object-cover"
-              />
+            {/* Swiper Slider - Harveys */}
+            <div className="w-full overflow-hidden">
+              <Swiper
+                modules={[Autoplay, Pagination]}
+                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                loop={true}
+                className="rounded-lg shadow-xl w-full"
+              >
+                {harveysImages.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="w-full rounded-lg overflow-hidden">
+                      <img
+                        src={image}
+                        alt={`Slide ${index + 1}`}
+                        className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover object-bottom"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
           </div>
         </div>
@@ -364,7 +400,7 @@ function App() {
               <img
                 src="/roast_lunch.jpg"
                 alt="Sunday Roast"
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover object-bottom"
               />
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">Sunday Roast</h3>
@@ -374,7 +410,7 @@ function App() {
             </div>
             <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
               <img
-                src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&q=80&w=2074"
+                src="/quiz.jpg"
                 alt="Pub Quiz"
                 className="w-full h-48 object-cover"
               />
@@ -388,7 +424,7 @@ function App() {
               <img
                 src="/live_music.jpg"
                 alt="Live Music"
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover object-top"
               />
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">Live Music</h3>
@@ -401,7 +437,7 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#e6a648] text-white py-12">
+      <footer className="bg-[#e6a648] text-white py-12 border-t-4 border-b-4 border-[#f3df63]">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
@@ -409,16 +445,16 @@ function App() {
                 <div className="w-12 h-12 flex items-center justify-center">
                   <img
                     src="/kingshead_cacklebury_logo.svg"
-                    alt="Kings Head Logo"
+                    alt="Kings Head Cacklebury Logo"
                     className="w-12 h-12"
                   />
                 </div>
-                <h3 className="text-black text-xl font-semibold">Kings Head Cacklebury</h3>
+                <h3 className="text-White text-xl font-semibold">Kings Head Cacklebury</h3>
               </div>
               <p>Your local community pub in Hailsham since 1850</p>
             </div>
             <div>
-              <h3 className="text-black text-xl font-semibold mb-4">Quick Links</h3>
+              <h3 className="text-white text-xl font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li><a href="#about" className="hover:text-black">About Us</a></li>
                 <li><a href="#food" className="hover:text-black">Food</a></li>
@@ -427,7 +463,7 @@ function App() {
               </ul>
             </div>
             <div>
-              <h3 className="text-black text-xl font-semibold mb-4">Contact Details</h3>
+              <h3 className="text-white text-xl font-semibold mb-4">Contact Details</h3>
               <ul className="space-y-2">
                 <li>
                   <a href="tel:01323440447" className="flex items-center gap-2 hover:text-black">
@@ -448,11 +484,17 @@ function App() {
               </ul>
             </div>
             <div>
-              <h3 className="text-black text-xl font-semibold mb-4">Follow Us</h3>
+              <h3 className="text-white text-xl font-semibold mb-4">Follow Us</h3>
               <div className="flex gap-4">
-                <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className="text-white hover:text-black">
-                  <Facebook className="w-6 h-6" />
-                </a>
+              <a
+                            href="https://www.facebook.com/KingsHeadCacklebury"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
+                          >
+                            <Facebook className="w-4 h-4" />
+                            <span className="leading-none break-all">facebook.com/KingsHeadCacklebury</span>
+                          </a>
               </div>
             </div>
           </div>
