@@ -78,7 +78,7 @@ function App() {
   const foodImages = [
     "/roast_lunch.jpg",
     "/roast_with_mum.jpg",
-    ];
+  ];
 
 
   return (
@@ -147,12 +147,12 @@ function App() {
       </div>
 
       {/* Hero Section */}
-      <div className="relative flex flex-col justify-center bg-cover bg-center h-[1505px] sm:h-[1480px] md:h-[700px] lg:h-[760px]" 
-      style={{
-        backgroundImage: 'url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=2074")',
-        backgroundAttachment: 'fixed',
-        width: '100%',
-      }}>
+      <div className="relative flex flex-col justify-center bg-cover bg-center h-[1505px] sm:h-[1480px] md:h-[700px] lg:h-[760px]"
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=2074")',
+          backgroundAttachment: 'fixed',
+          width: '100%',
+        }}>
         <div className="absolute inset-0 bg-black/40">
           <div className="container mx-auto px-4 py-6">
             <div className="pt-8">
@@ -258,29 +258,31 @@ function App() {
         </div>
       </div>
 
-   
+
       <section id="food" className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Famous Sunday Roasts</h2>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
 
-            {/* Swiper Slider */}
-            <div>
+            {/* Swiper Slider - Modified for better mobile display */}
+            <div className="w-full overflow-hidden">
               <Swiper
                 modules={[Autoplay, Pagination]}
                 autoplay={{ delay: 4000, disableOnInteraction: false }}
                 pagination={{ clickable: true }}
                 loop={true}
-                className="rounded-lg shadow-xl"
-             
+                className="rounded-lg shadow-xl w-full"
               >
                 {foodImages.map((image, index) => (
                   <SwiperSlide key={index}>
-                    <img 
-                      src={image} 
-                      alt={`Slide ${index + 1}`} 
-                      className="w-full h-[600px] object-cover object-bottom rounded-lg" />
+                    <div className="w-full rounded-lg overflow-hidden">
+                      <img
+                        src={image}
+                        alt={`Slide ${index + 1}`}
+                        className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover object-bottom"
+                      />
+                    </div>
                   </SwiperSlide>
                 ))}
               </Swiper>
