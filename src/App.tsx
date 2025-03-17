@@ -83,14 +83,18 @@ function App() {
 
   const harveysImages = [
     "/harveys_pumps.jpg",
-    "/harveys_pale.jpg",
+    "/guiness.jpg",
+    "/cruzcampo.jpg",
     "/harveys_best.jpg",
+    "/guiness_zero.jpg",
+    "/harveys_pale.jpg",
+    "/cruzcampo_beer.jpg",
   ];
 
   return (
     <div className="min-h-screen bg-white">
       {/* Sticky Header */}
-      <div className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-[#f3df63] border-t-4 border-b-4 border-[#e6a648]' : ''}`}>
+      <div className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-[#f3df63] border-t-4 border-[#e6a648]' : ''}`}>
         <div className="container mx-auto px-4">
           <nav className={`flex justify-between items-center transition-all duration-300 ${isScrolled ? 'py-2' : 'py-4'}`}>
             <div className="flex items-center gap-4">
@@ -132,13 +136,13 @@ function App() {
                 <a href="#harveys" className="block px-6 py-2 hover:bg-[#f3df63]/10">Harvey's Ales</a>
                 <a href="#events" className="block px-6 py-2 hover:bg-[#f3df63]/10">Events</a>
                 <div className="px-6 py-4 border-t border-gray-200">
-                  <a href="tel:01323440447" className="flex items-center gap-2 text-[#e6a648]">
+                  <a href="tel:01323440447" className="flex items-center gap-2 hover:text-[#e6a648]">
                     <Phone className="w-4 h-4" />
                     01323 440447
                   </a>
                 </div>
                 <div className="px-6 py-4 border-t border-gray-200">
-                  <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
+                  <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I’d like to know more about..." className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
                     <Mail className="w-4 h-4" />
                     lisa.kingshead@hotmail.com
                   </a>
@@ -159,17 +163,17 @@ function App() {
 
             {/* Desktop Menu */}
             <div className={`hidden md:flex space-x-6 transition-colors ${isScrolled ? 'text-black' : 'text-white'}`}>
-              <a href="#about" className={`hover:text-[#e6a648] ${isScrolled ? 'text-black' : ''}`}>About</a>
-              <a href="#food" className={`hover:text-[#e6a648] ${isScrolled ? 'text-black' : ''}`}>Food</a>
-              <a href="#events" className={`hover:text-[#e6a648] ${isScrolled ? 'text-black' : ''}`}>Events</a>
-              <a href="#contact" className={`hover:text-[#e6a648] ${isScrolled ? 'text-black' : ''}`}>Contact</a>
+              <a href="#food" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Sunday Lunch</a>
+              <a href="#harveys" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Harvey's Ales</a>
+              <a href="#events" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Events</a>
+              <a href="#hero" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Contact</a>
             </div>
           </nav>
         </div>
       </div>
 
       {/* Hero Section */}
-      <div className="relative flex flex-col justify-center bg-cover bg-center h-[1505px] sm:h-[1480px] md:h-[700px] lg:h-[760px]"
+      <div id="hero" className="relative flex flex-col justify-center bg-cover bg-center h-[1505px] sm:h-[1480px] md:h-[700px] lg:h-[760px]"
         style={{
           backgroundImage: 'url("/bar.jpg")',
           backgroundAttachment: 'fixed',
@@ -255,7 +259,7 @@ function App() {
                           <Phone className="w-4 h-4" />
                           01323 440447
                         </a>
-                        <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
+                        <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I’d like to know more about..." className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
                           <Mail className="w-4 h-4" />
                           lisa.kingshead@hotmail.com
                         </a>
@@ -279,7 +283,6 @@ function App() {
           </div>
         </div>
       </div>
-
 
       <section id="food" className="py-8 bg-white">
         <div className="container mx-auto px-4">
@@ -356,13 +359,18 @@ function App() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-center mb-4">Proud to serve Harvey's Ales</h2>
-              <p className="text-gray-700 text-lg">
+              <p className="text-gray-700 text-lg mb-6">
                 As a proud Harvey's pub, we serve the finest selection of Sussex ales,
                 brewed in Lewes using traditional methods and local ingredients.
               </p>
-              <p className="text-gray-700 text-lg">
+              <p className="text-gray-700 text-lg mb-6">
                 From the classic Sussex Best Bitter to seasonal specialties,
                 experience the authentic taste of Sussex in every pint.
+              </p>
+              <p className="text-gray-700 text-lg mb-6">
+                In addition to our exceptional ales, we offer a carefully curated selection of fine wines, 
+                premium gins, and a range of quality beers, including Cruzcampo, Stella Artois, and Guinness. 
+                Whatever your preference, you'll find something to perfectly complement your visit.
               </p>
             </div>
             {/* Swiper Slider - Harveys */}
@@ -392,9 +400,9 @@ function App() {
       </section>
 
       {/* Events Section */}
-      <section id="events" className="py-16 bg-white">
+      <section id="events" className="py-6 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">What's On</h2>
+          <h2 className="text-4xl font-bold text-center mb-6">What's On at the Pub</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
               <img
@@ -437,7 +445,7 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#e6a648] text-white py-12 border-t-4 border-b-4 border-[#f3df63]">
+      <footer className="bg-[#e6a648] text-white py-12 border-t-4 border-[#f3df63]">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
@@ -449,17 +457,18 @@ function App() {
                     className="w-12 h-12"
                   />
                 </div>
-                <h3 className="text-White text-xl font-semibold">Kings Head Cacklebury</h3>
+                <h3 className="text-white text-xl font-semibold">Kings Head Cacklebury</h3>
               </div>
               <p>Your local community pub in Hailsham since 1850</p>
             </div>
             <div>
               <h3 className="text-white text-xl font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                <li><a href="#about" className="hover:text-black">About Us</a></li>
-                <li><a href="#food" className="hover:text-black">Food</a></li>
+                <li><a href="#hero" className="hover:text-black">About Us</a></li>
+                <li><a href="#food" className="hover:text-black">Sunday Lunch</a></li>
+                <li><a href="#harveys" className="hover:text-black">Harvey's Ales</a></li>
                 <li><a href="#events" className="hover:text-black">Events</a></li>
-                <li><a href="#contact" className="hover:text-black">Contact</a></li>
+                <li><a href="#hero" className="hover:text-black">Contact</a></li>
               </ul>
             </div>
             <div>
@@ -472,7 +481,7 @@ function App() {
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-black">
+                  <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I’d like to know more about..." className="flex items-center gap-2 hover:text-black">
                     <Mail className="w-4 h-4" />
                     lisa.kingshead@hotmail.com
                   </a>
@@ -486,20 +495,27 @@ function App() {
             <div>
               <h3 className="text-white text-xl font-semibold mb-4">Follow Us</h3>
               <div className="flex gap-4">
-              <a
-                            href="https://www.facebook.com/KingsHeadCacklebury"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
-                          >
-                            <Facebook className="w-4 h-4" />
-                            <span className="leading-none break-all">facebook.com/KingsHeadCacklebury</span>
-                          </a>
+                <a
+                  href="https://www.facebook.com/KingsHeadCacklebury"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
+                >
+                  <Facebook className="w-4 h-4" />
+                  <span className="leading-none break-all">facebook.com/KingsHeadCacklebury</span>
+                </a>
               </div>
             </div>
           </div>
+
+          {/* Copyright Section */}
+          <div className="mt-8 border-t border-[#f3df63] pt-4 text-center text-sm text-white">
+            <p>© {new Date().getFullYear()} Kings Head Cacklebury. All rights reserved.</p>
+            <p>Website created by <a href="mailto:rossnewark101@gmail.com" className="hover:text-black">Ross Newark</a></p>
+          </div>
         </div>
       </footer>
+
     </div>
   );
 }
