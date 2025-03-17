@@ -136,10 +136,13 @@ function App() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <div className="relative min-h-screen flex flex-col justify-center bg-cover bg-center py-20 md:py-28"style={{
+     {/* Hero Section */}
+     <div className="relative flex flex-col justify-center bg-cover bg-center py-20 md:py-28" style={{
         backgroundImage: 'url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=2074")',
-        backgroundAttachment: 'fixed'
+        backgroundAttachment: 'fixed',
+        minHeight: '120vh', // Taller on all screens
+        height: 'auto',
+        paddingBottom: '36rem' // Dramatically increased padding for mobile
       }}>
         <div className="absolute inset-0 bg-black/40">
           <div className="container mx-auto px-4 py-6">
@@ -156,84 +159,87 @@ function App() {
                 </a>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-6 mt-4">
-                {/* Opening Hours */}
-                <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
-                  <div className="p-[2px]">
-                    <img
-                      src="../public/standard_opening_hours.png"
-                      alt="Opening Hours Blackboard"
-                      className="w-full h-auto md:h-40 lg:h-[40vh] xl:h-[50vh] object-cover rounded-t-lg"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Clock className="text-[#e6a648]" />
-                      <h2 className="text-black text-xl font-semibold">Opening Hours</h2>
+              {/* Move cards to container with negative margin for better positioning */}
+              <div className="relative z-10 mt-16 md:mt-12">
+                <div className="grid md:grid-cols-3 gap-6">
+                  {/* Opening Hours */}
+                  <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
+                    <div className="p-[2px]">
+                      <img
+                        src="../public/standard_opening_hours.png"
+                        alt="Opening Hours Blackboard"
+                        className="w-full h-48 sm:h-48 md:h-40 lg:h-64 object-cover rounded-t-lg"
+                      />
                     </div>
-                    <div className="text-gray-700 space-y-2">
-                      <p>Mon-Wed: 4pm - 11pm</p>
-                      <p>Thu-Fri: 2pm - 11pm</p>
-                      <p>Sat-Sun: 12pm - 11pm</p>
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Clock className="text-[#e6a648]" />
+                        <h2 className="text-black text-xl font-semibold">Opening Hours</h2>
+                      </div>
+                      <div className="text-gray-700 space-y-2">
+                        <p>Mon-Wed: 4pm - 11pm</p>
+                        <p>Thu-Fri: 2pm - 11pm</p>
+                        <p>Sat-Sun: 12pm - 11pm</p>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Location with Pub Image */}
-                <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
-                  <div className="p-[2px]">
-                    <img
-                      src="../public/kingshead_cacklebury_pub_outside.jpg"
-                      alt="Kings Head Cacklebury Exterior"
-                      className="w-full h-auto min-h-[8rem] md:h-32 lg:h-[40vh] xl:h-[50vh] object-contain md:object-cover rounded-t-lg"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <MapPin className="text-[#e6a648]" />
-                      <h2 className="text-black text-xl font-semibold">Find Us</h2>
+                  {/* Location with Pub Image */}
+                  <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
+                    <div className="p-[2px]">
+                      <img
+                        src="../public/kingshead_cacklebury_pub_outside.jpg"
+                        alt="Kings Head Cacklebury Exterior"
+                        className="w-full h-48 sm:h-48 md:h-40 lg:h-64 object-cover rounded-t-lg"
+                      />
                     </div>
-                    <p className="text-gray-700">
-                      146 South Road<br />
-                      Hailsham, East Sussex<br />
-                      BN27 3NJ
-                    </p>
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <MapPin className="text-[#e6a648]" />
+                        <h2 className="text-black text-xl font-semibold">Find Us</h2>
+                      </div>
+                      <p className="text-gray-700">
+                        146 South Road<br />
+                        Hailsham, East Sussex<br />
+                        BN27 3NJ
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* Contact */}
-                <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
-                  <div className="p-[2px]">
-                    <img
-                      src="../public/contact_a_board.png"
-                      alt="Contact A-Board"
-                      className="w-full h-auto md:h-40 lg:h-40 xl:h-48 object-cover rounded-t-lg"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Phone className="text-[#e6a648]" />
-                      <h2 className="text-black text-xl font-semibold">Contact Us</h2>
+                  {/* Contact */}
+                  <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
+                    <div className="p-[2px]">
+                      <img
+                        src="../public/contact_a_board.png"
+                        alt="Contact A-Board"
+                        className="w-full h-48 sm:h-48 md:h-40 lg:h-64 object-cover rounded-t-lg"
+                      />
                     </div>
-                    <div className="text-gray-700 space-y-4">
-                      <a href="tel:01323440447" className="flex items-center gap-2 hover:text-[#e6a648]">
-                        <Phone className="w-4 h-4" />
-                        01323 440447
-                      </a>
-                      <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-[#e6a648]">
-                        <Mail className="w-4 h-4" />
-                        lisa.kingshead@hotmail.com
-                      </a>
-                      <div className="flex gap-4 mt-4">
-                        <a
-                          href="https://www.facebook.com/KingsHeadCacklebury"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 hover:text-[#e6a648]"
-                        >
-                          <Facebook className="w-4 h-4" /> {/* Match size with other icons */}
-                          <span className="leading-none">facebook.com/KingsHeadCacklebury</span>
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Phone className="text-[#e6a648]" />
+                        <h2 className="text-black text-xl font-semibold">Contact Us</h2>
+                      </div>
+                      <div className="text-gray-700 space-y-4">
+                        <a href="tel:01323440447" className="flex items-center gap-2 hover:text-[#e6a648]">
+                          <Phone className="w-4 h-4" />
+                          01323 440447
                         </a>
+                        <a href="mailto:lisa.kingshead@hotmail.com" className="flex items-center gap-2 hover:text-[#e6a648]">
+                          <Mail className="w-4 h-4" />
+                          lisa.kingshead@hotmail.com
+                        </a>
+                        <div className="flex gap-4 mt-4">
+                          <a
+                            href="https://www.facebook.com/KingsHeadCacklebury"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 hover:text-[#e6a648]"
+                          >
+                            <Facebook className="w-4 h-4" />
+                            <span className="leading-none">facebook.com/KingsHeadCacklebury</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -244,14 +250,14 @@ function App() {
         </div>
       </div>
 
-      {/* Food & Drink Section */}
-      <section id="food" className="py-16 bg-white">
+      {/* Food & Drink Section - Added margin-top for consistent spacing */}
+      <section id="food" className="py-16 bg-white mt-[38rem] sm:mt-[36rem] md:mt-48 lg:mt-32">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Famous Sunday Roasts</h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <img
-                src="https://images.unsplash.com/photo-1546833998-877b37c2e5c6?auto=format&fit=crop&q=80&w=2070"
+                src="/roast_lunch.jpg"
                 alt="Sunday Roast"
                 className="rounded-lg shadow-xl w-full h-[400px] object-cover"
               />
@@ -259,8 +265,8 @@ function App() {
             <div>
               <h3 className="text-2xl font-semibold mb-4">Join Us Every Sunday</h3>
               <p className="text-lg text-gray-700 mb-6">
-                Our Sunday roasts are legendary in Hailsham. Choose from succulent roast beef, tender pork, or our vegetarian option,
-                all served with crispy roast potatoes, Yorkshire pudding, seasonal vegetables, and rich gravy.
+                Our Sunday roasts are legendary in Hailsham. Choose from succulent roast beef, tender pork, delicous chicken or our vegetarian option,
+                all served with crispy roast potatoes, Yorkshire pudding's, seasonal vegetables, and rich gravy.
               </p>
               <div className="bg-[#f3df63]/10 p-6 rounded-lg">
                 <p className="text-xl font-semibold mb-2">Sunday Roast Times</p>
@@ -294,7 +300,7 @@ function App() {
             </div>
             <div>
               <img
-                src="https://images.unsplash.com/photo-1584225064785-c62a8b43d148?auto=format&fit=crop&q=80&w=2074"
+                src="/harveys_pumps.jpg"
                 alt="Harvey's beer on tap"
                 className="rounded-lg shadow-xl w-full h-[400px] object-cover"
               />
@@ -310,7 +316,7 @@ function App() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
               <img
-                src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&q=80&w=2070"
+                src="/roast_lunch.jpg"
                 alt="Sunday Roast"
                 className="w-full h-48 object-cover"
               />
@@ -328,20 +334,20 @@ function App() {
               />
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">Pub Quiz Night</h3>
-                <p className="text-gray-600">Every Thursday</p>
+                <p className="text-gray-600">Every Sunday Evening</p>
                 <p className="mt-2">Test your knowledge and win great prizes!</p>
               </div>
             </div>
             <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
               <img
-                src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=2074"
+                src="/live_music.jpg"
                 alt="Live Music"
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">Live Music</h3>
-                <p className="text-gray-600">Friday Nights</p>
-                <p className="mt-2">Local bands and great atmosphere!</p>
+                <p className="text-gray-600">Watch this space!</p>
+                <p className="mt-2">Local bands & singers on our purpose built stage in the large pub garden</p>
               </div>
             </div>
           </div>
