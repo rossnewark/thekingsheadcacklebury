@@ -23,8 +23,8 @@ function App() {
       // Only update rotation if we've scrolled at least 5px
       if (Math.abs(currentScrollY - lastScrollY.current) >= 5) {
         if (currentScrollY > lastScrollY.current) {
-          // Scrolling down - rotate clockwise (limit to 180 degrees)
-          setRotation(prev => Math.min(prev + 2, 180));
+          // Scrolling down - rotate clockwise
+          setRotation(prev => Math.min(prev + 2, 360));
         } else if (currentScrollY < lastScrollY.current) {
           // Scrolling up - rotate counter-clockwise (minimum 0 degrees)
           setRotation(prev => Math.max(prev - 2, 0));
