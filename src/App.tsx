@@ -200,7 +200,7 @@ function App() {
                   <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
                     <div className="p-[2px]">
                       <img
-                        src="../public/standard_opening_hours.png"
+                        src="/standard_opening_hours.png"
                         alt="Opening Hours Blackboard"
                         className="w-full h-48 sm:h-48 md:h-40 lg:h-64 object-cover rounded-t-lg"
                       />
@@ -222,7 +222,7 @@ function App() {
                   <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
                     <div className="p-[2px]">
                       <img
-                        src="../public/kingshead_cacklebury_pub_outside.jpg"
+                        src="/kingshead_cacklebury_pub_outside.jpg"
                         alt="Kings Head Cacklebury Exterior"
                         className="w-full h-48 sm:h-48 md:h-40 lg:h-64 object-cover rounded-t-lg"
                       />
