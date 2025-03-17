@@ -330,12 +330,12 @@ function App() {
       </section>
 
       {/* Harvey's Section */}
-      <section className="py-16 bg-[#f3df63]/10">
+      <section className="py-8 bg-[#f3df63]/10">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold mb-6">Proud to Serve Harvey's Ales</h2>
-              <p className="text-gray-700 text-lg mb-6">
+            <h2 className="text-4xl font-bold text-center mb-4">Proud to serve Harvey's Ales</h2>
+              <p className="text-gray-700 text-lg">
                 As a proud Harvey's pub, we serve the finest selection of Sussex ales,
                 brewed in Lewes using traditional methods and local ingredients.
               </p>
