@@ -78,6 +78,7 @@ function App() {
   const foodImages = [
     "/roast_lunch.jpg",
     "/roast_with_mum.jpg",
+    "/customers_enjoying_a_roast.jpg",
   ];
 
 
@@ -161,7 +162,7 @@ function App() {
                 <p className="text-white text-xl md:text-2xl mb-2">Experience Sussex hospitality, Harvey's Ales & home-cooked food in our historic Hailsham pub</p>
                 <a
                   href="tel:01323440447"
-                  className="inline-flex items-center gap-2 bg-[#f3df63] text-black px-6 py-3 rounded-lg hover:bg-[#e6a648] transition-colors"
+                  className="inline-flex items-center gap-2 bg-[#f3df63] text-black px-6 py-3 rounded-lg hover:bg-[#e6a648] hover:text-white transition-colors"
                 >
                   <Phone className="w-5 h-5" />
                   Get in touch with us: 01323 440447
@@ -259,13 +260,12 @@ function App() {
       </div>
 
 
-      <section id="food" className="py-16 bg-white">
+      <section id="food" className="py-8 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Famous Sunday Roasts</h2>
+          <h2 className="text-4xl font-bold text-center mb-8">Our Legendary Sunday Roasts</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-
-            {/* Swiper Slider - Modified for better mobile display */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            {/* Swiper Slider - Adjusted for better mobile display */}
             <div className="w-full overflow-hidden">
               <Swiper
                 modules={[Autoplay, Pagination]}
@@ -289,19 +289,38 @@ function App() {
             </div>
 
             {/* Roast Details */}
-            <div>
+            <div className="flex flex-col justify-start">
               <h3 className="text-2xl font-semibold mb-4">Join Us Every Sunday</h3>
               <p className="text-lg text-gray-700 mb-6">
-                Our Sunday roasts are legendary in Hailsham. Choose from succulent roast beef, tender pork, delicious chicken, or our vegetarian option,
-                all served with crispy roast potatoes, Yorkshire pudding's, seasonal vegetables, and rich gravy.
+                Our legendary Sunday roasts are the talk of Hailsham, and for good reason! Every plate is crafted with
+                <strong> locally sourced, top-quality ingredients</strong>, ensuring the freshest flavors in every bite.
               </p>
-              <div className="bg-[#f3df63]/10 p-6 rounded-lg">
+              <p className="text-lg text-gray-700 mb-6">
+                Choose from <strong>succulent roast beef, tender pork, mouthwatering chicken</strong>, or our <em>delicious vegetarian option</em>,
+                each cooked to perfection and served with <strong>crispy golden roast potatoes, homemade Yorkshire puddings, seasonal vegetables,
+                  and rich, velvety gravy</strong>.
+              </p>
+              <p className="text-lg text-gray-700 mb-6">
+                What makes our roasts truly special? They're personally prepared by our landlord, <strong>Pete Loft – better
+                  known as ‘Lofty’</strong>. A <em>highly trained chef</em> with experience in some of London’s finest eateries,
+                Lofty brings his passion for great food to every dish, making your Sunday lunch an experience to remember.
+              </p>
+
+              <p className="text-lg text-gray-700 mb-8">
+                <strong>Join us this Sunday and taste the difference!</strong>
+              </p>
+
+              {/* Sunday Roast Times Section */}
+              <div className="bg-[#f3df63]/10 p-6 rounded-lg py-8">
                 <p className="text-xl font-semibold mb-2">Sunday Roast Times</p>
                 <p className="text-gray-700">Served 12pm - 4pm every Sunday</p>
                 <p className="text-gray-700 mt-2">
-                  <a href="tel:01323440447" className="flex items-center gap-2 text-[#e6a648] hover:text-[#f3df63]">
-                    <Phone className="w-4 h-4" />
-                    Book a table: 01323 440447
+                  <a
+                    href="tel:01323440447"
+                    className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-6 py-3 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
+                  >
+                    <Phone className="w-5 h-5" />
+                    Book Your Table Now: 01323 440447
                   </a>
                 </p>
               </div>
