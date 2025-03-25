@@ -4,13 +4,15 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import FacebookPosts from './components/facebookPosts';
+import FacebookEvents from './components/facebookEvents';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [rotation, setRotation] = useState(0);
   const lastScrollY = useRef(0);
-  const scrollTimer = useRef(null);
+  const scrollTimer = useRef<number | null>(null);
   const isScrolling = useRef(false);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ function App() {
       }
 
       // Set new timer to detect when scrolling stops
-      scrollTimer.current = setTimeout(() => {
+      scrollTimer.current = window.setTimeout(() => {
         isScrolling.current = false;
 
         // If we've scrolled back to the top, reset rotation
@@ -183,7 +185,7 @@ function App() {
           <div className="container mx-auto px-4 py-6">
             <div className="pt-8">
               <div className="mt-12 md:mt-16 max-w-4xl mx-auto text-center">
-                <h2 className="text-[#f3df63] text-3xl md:text-5xl font-bold mb-0">Your Local Community Pub Since 1850</h2>
+                <h2 className="text-[#ffffff] text-3xl md:text-5xl font-bold mb-0">Your Local Community Pub Since 1850</h2>
                 <p className="text-white text-xl md:text-2xl mb-2">Experience Sussex hospitality, Harvey's Ales & home-cooked food in our historic Hailsham pub</p>
                 <a
                   href="tel:01323440447"
@@ -398,6 +400,20 @@ function App() {
           </div>
         </div>
       </section>
+
+{/* Facebook Posts Section */}
+<section className="py-8 bg-white">
+  <div className="container mx-auto px-4">
+    <FacebookPosts />
+  </div>
+</section>
+
+{/* Facebook Events Section - Replace or complement your existing Events section */}
+<section className="py-8 bg-[#f3df63]/10">
+  <div className="container mx-auto px-4">
+    <FacebookEvents />
+  </div>
+</section>
 
       {/* Events Section */}
       <section id="events" className="py-6 bg-white">
