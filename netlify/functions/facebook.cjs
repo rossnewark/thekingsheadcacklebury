@@ -1,10 +1,11 @@
 const axios = require('axios');
-const { getStore } = require('@netlify/blobs');
+const fs = require('fs');
+const path = require('path');
 
 // Configuration
 const PAGE_ID = '56005271774'; // Kings Head Cacklebury Facebook page ID
-const STORE_NAME = 'facebook-tokens';
-const TOKEN_KEY = 'access-token';
+const IS_NETLIFY = process.env.NETLIFY === 'true';
+const TOKEN_FILE_PATH = path.join(__dirname, '.token.json');
 
 // Fallback data for when Facebook API is unavailable
 const FALLBACK_DATA = {
@@ -83,25 +84,29 @@ function getNextSaturday(hours, minutes) {
   return date;
 }
 
-// Helper function to read the current token from KV store
+// Helper function to read the current token
 async function getToken() {
+  // In Netlify environment, always use the environment variable
+  if (IS_NETLIFY) {
+    return process.env.FACEBOOK_LONG_LIVED_TOKEN;
+  }
+  
+  // For local development, read from file
   try {
-    const store = getStore(STORE_NAME);
-    const data = await store.get(TOKEN_KEY);
-    
-    if (data) {
+    if (fs.existsSync(TOKEN_FILE_PATH)) {
+      const data = fs.readFileSync(TOKEN_FILE_PATH, 'utf8');
       const tokenData = JSON.parse(data);
       return tokenData.token;
     }
     return process.env.FACEBOOK_LONG_LIVED_TOKEN;
   } catch (error) {
-    console.error('Error reading token from KV store:', error);
+    console.error('Error reading token file:', error);
     return process.env.FACEBOOK_LONG_LIVED_TOKEN;
   }
 }
 
 // Get Facebook posts
-async function getFacebookPosts(token) {
+async function getFacebookPosts(token, limit = 5) {
   try {
     if (!token) {
       throw new Error('No Facebook token available');
@@ -111,7 +116,7 @@ async function getFacebookPosts(token) {
     const response = await axios.get(`https://graph.facebook.com/v19.0/${PAGE_ID}/posts`, {
       params: {
         fields: 'message,created_time,full_picture,permalink_url',
-        limit: '5',
+        limit: limit.toString(),
         access_token: token
       }
     });
@@ -123,34 +128,39 @@ async function getFacebookPosts(token) {
     
     // Use fallback data
     console.log('Using fallback posts data');
-    return FALLBACK_DATA.posts;
+    return FALLBACK_DATA.posts.slice(0, limit);
   }
 }
 
 // Get Facebook events
-async function getFacebookEvents(token) {
+async function getFacebookEvents(token, limit = 3) {
   try {
     if (!token) {
       throw new Error('No Facebook token available');
     }
     
+    console.log('Fetching events from Facebook with limit:', limit);
+    
     // Attempt to use the API
     const response = await axios.get(`https://graph.facebook.com/v19.0/${PAGE_ID}/events`, {
       params: {
         fields: 'name,description,start_time,end_time,cover',
-        limit: '3',
+        limit: limit.toString(),
         access_token: token
       }
     });
     
-    return response.data.data;
+    console.log('Events API response status:', response.status);
+    console.log('Events data count:', response.data.data?.length || 0);
+    
+    return response.data.data || [];
   } catch (error) {
     console.error('Error fetching Facebook events:', 
       error.response ? JSON.stringify(error.response.data) : error.message);
     
     // Use fallback data
     console.log('Using fallback events data');
-    return FALLBACK_DATA.events;
+    return FALLBACK_DATA.events.slice(0, limit);
   }
 }
 
@@ -191,10 +201,29 @@ exports.handler = async function(event, context) {
     };
   }
 
-  // Extract query parameters
+  console.log('Facebook function request:', event.path, event.queryStringParameters);
+
+  // Extract query parameters and path
   const params = event.queryStringParameters || {};
-  const type = params.type || 'posts';
-  const limit = parseInt(params.limit) || 5;
+  const pathSegments = event.path.split('/');
+  
+  // Determine if it's posts or events from the path or query param
+  let type = 'posts';
+  
+  // Check if path ends with /events or /posts
+  const lastSegment = pathSegments[pathSegments.length - 1];
+  if (lastSegment === 'events') {
+    type = 'events';
+  } else if (lastSegment === 'posts') {
+    type = 'posts';
+  } else if (params.type) {
+    // Fallback to query parameter
+    type = params.type;
+  }
+  
+  console.log('Determined request type:', type);
+  const limit = parseInt(params.limit) || (type === 'events' ? 3 : 5);
+  console.log('Using limit:', limit);
   
   try {
     // Try to trigger token refresh first
@@ -207,14 +236,17 @@ exports.handler = async function(event, context) {
     
     // Get the current token
     const token = await getToken();
+    console.log('Retrieved token (truncated):', token ? token.substring(0, 10) + '...' : 'null');
     
     // Get data
     let result;
     if (type === 'events') {
-      result = await getFacebookEvents(token);
+      result = await getFacebookEvents(token, limit);
     } else {
-      result = await getFacebookPosts(token);
+      result = await getFacebookPosts(token, limit);
     }
+    
+    console.log(`Successfully fetched ${result.length} ${type}`);
     
     return {
       statusCode: 200,
@@ -225,7 +257,8 @@ exports.handler = async function(event, context) {
     console.error('Error in Facebook function:', error);
     
     // Return fallback data even if all else fails
-    const fallbackData = type === 'events' ? FALLBACK_DATA.events : FALLBACK_DATA.posts;
+    const fallbackData = type === 'events' ? FALLBACK_DATA.events.slice(0, limit) : FALLBACK_DATA.posts.slice(0, limit);
+    console.log(`Returning fallback ${type} data:`, fallbackData.length);
     
     return {
       statusCode: 200, // Return 200 with fallback data instead of error

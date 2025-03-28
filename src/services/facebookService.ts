@@ -42,7 +42,7 @@ export interface FacebookPost {
     /**
      * Get events from the Facebook API via our backend function
      */
-    async getEvents(limit = 5): Promise<FacebookEvent[]> {
+    async getEvents(limit = 3): Promise<FacebookEvent[]> {
       try {
         const response = await fetch(`${this.apiBaseUrl}/events?limit=${limit}`);
         

@@ -13,8 +13,10 @@ const FacebookEvents: React.FC<FacebookEventsProps> = ({ limit = 3 }) => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
+        console.log('Fetching events with limit:', limit);
         setLoading(true);
         const eventsData = await facebookService.getEvents(limit);
+        console.log('Events data received:', eventsData);
         setEvents(eventsData);
         setError(null);
       } catch (err) {
@@ -40,6 +42,9 @@ const FacebookEvents: React.FC<FacebookEventsProps> = ({ limit = 3 }) => {
     });
   };
 
+  // Debug output to help identify issues
+  console.log('Events component state:', { loading, error, eventsCount: events.length });
+
   if (loading) {
     return (
       <div className="grid md:grid-cols-3 gap-8">
@@ -59,6 +64,7 @@ const FacebookEvents: React.FC<FacebookEventsProps> = ({ limit = 3 }) => {
   }
 
   if (error) {
+    console.error('Rendering error state:', error);
     return (
       <div className="text-center py-4">
         <p className="text-red-500">{error}</p>
@@ -66,7 +72,8 @@ const FacebookEvents: React.FC<FacebookEventsProps> = ({ limit = 3 }) => {
     );
   }
 
-  if (events.length === 0) {
+  if (!events || events.length === 0) {
+    console.log('No events to display');
     return (
       <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
         <div className="p-6 text-center">
