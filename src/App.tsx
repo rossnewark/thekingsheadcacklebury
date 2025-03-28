@@ -86,9 +86,9 @@ function App() {
   };
 
   const foodImages = [
-    "/roast_lunch.jpg",
-    "/roast_with_mum.jpg",
-    "/customers_enjoying_a_roast.jpg",
+    "/roast_lunch.png",
+    "/roast_lunch_chicken.png",
+    "/customers_enjoying_a_roast.png",
   ];
 
   const harveysImages = [
@@ -290,7 +290,7 @@ function App() {
       {/* Hero Section */}
       <div
         id="hero"
-        className="relative flex flex-col justify-center bg-cover bg-center h-[1505px] sm:h-[1480px] md:h-[700px] lg:h-[760px]"
+        className="relative flex flex-col justify-center bg-cover bg-center h-[1900px] sm:h-[2256px] md:h-[700px] lg:h-[850px]"
         style={{
           backgroundImage: 'url("/bar.jpg")',
           backgroundAttachment: "fixed",
