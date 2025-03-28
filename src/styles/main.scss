@@ -1,0 +1,298 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+@use 'sass:color';
+
+/* Component styles */
+
+// Header styles
+.header {
+  position: fixed;
+  width: 100%;
+  z-index: v.$z-50;
+  transition: v.$transition-standard;
+  
+  &--scrolled {
+    background-color: v.$pub-yellow;
+    border-top: 4px solid v.$pub-amber;
+  }
+  
+  .logo-container {
+    transition: transform 0.3s ease-out, width 0.3s ease, height 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+  
+  .menu-link {
+    @include m.hover-color(v.$white);
+    
+    .header--scrolled & {
+      color: v.$black;
+      
+      &:hover {
+        // Use color.adjust instead of darken
+        color: color.adjust(v.$pub-yellow, $lightness: -15%);
+      }
+    }
+  }
+}
+
+// Hero section
+.hero {
+  background-image: url('/bar.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  
+  &__overlay {
+    background-color: rgba(v.$black, 0.4);
+  }
+  
+  &__title {
+    color: v.$pub-yellow;
+    font-weight: bold;
+  }
+  
+  &__subtitle {
+    color: v.$white;
+  }
+  
+  &__cta {
+    @include m.button-primary;
+  }
+}
+
+// Contact cards
+.contact-card {
+  @include m.card;
+  
+  &__image {
+    height: 12rem;
+    object-fit: cover;
+    width: 100%;
+    border-top-left-radius: v.$radius-lg;
+    border-top-right-radius: v.$radius-lg;
+  }
+  
+  &__icon {
+    color: v.$pub-amber;
+  }
+  
+  &__title {
+    font-weight: 600;
+    color: v.$black;
+  }
+  
+  &__link {
+    @include m.hover-color(v.$pub-amber);
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-2;
+  }
+}
+
+// Food section
+.food-section {
+  @include m.section-padding;
+  
+  // Fix the mixed declarations issue by properly wrapping
+  & {
+    background-color: v.$white;
+  }
+  
+  &__title {
+    font-weight: bold;
+    text-align: center;
+    font-size: v.$font-size-4xl;
+  }
+  
+  &__subtitle {
+    font-weight: 600;
+    font-size: v.$font-size-2xl;
+  }
+  
+  &__text {
+    color: v.$gray-700;
+    font-size: v.$font-size-lg;
+  }
+  
+  &__times {
+    background-color: rgba(v.$pub-yellow, 0.1);
+    border-radius: v.$radius-lg;
+    padding: v.$spacing-6;
+  }
+  
+  &__cta {
+    @include m.button-secondary;
+  }
+}
+
+// Harveys section
+.harveys-section {
+  @include m.section-padding;
+  
+  // Fix the mixed declarations issue by properly wrapping
+  & {
+    background-color: rgba(v.$pub-yellow, 0.1);
+  }
+  
+  &__title {
+    font-weight: bold;
+    text-align: center;
+    font-size: v.$font-size-4xl;
+  }
+  
+  &__text {
+    color: v.$gray-700;
+    font-size: v.$font-size-lg;
+  }
+}
+
+// Events section
+.events-section {
+  @include m.section-padding;
+  
+  // Fix the mixed declarations issue by properly wrapping
+  & {
+    background-color: v.$white;
+  }
+  
+  &__title {
+    font-weight: bold;
+    text-align: center;
+    font-size: v.$font-size-4xl;
+  }
+  
+  .event-card {
+    border: 1px solid v.$pub-amber;
+    border-radius: v.$radius-xl;
+    overflow: hidden;
+    box-shadow: v.$shadow-xl;
+    background-color: v.$white;
+    @include m.hover-lift;
+    
+    &__image {
+      height: 12rem;
+      object-fit: cover;
+      width: 100%;
+      
+      &--bottom {
+        object-position: bottom;
+      }
+      
+      &--top {
+        object-position: top;
+      }
+    }
+    
+    &__title {
+      font-weight: 600;
+      font-size: v.$font-size-xl;
+    }
+    
+    &__subtitle {
+      color: v.$gray-600;
+    }
+  }
+}
+
+// Footer
+.footer {
+  background-color: v.$pub-amber;
+  color: v.$white;
+  padding-top: v.$spacing-12;
+  padding-bottom: v.$spacing-12;
+  border-top: 4px solid v.$pub-yellow;
+  
+  &__title {
+    color: v.$white;
+    font-weight: 600;
+    font-size: v.$font-size-xl;
+  }
+  
+  &__link {
+    @include m.hover-color(v.$black);
+  }
+  
+  &__icon {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  &__copyright {
+    margin-top: v.$spacing-8;
+    border-top: 1px solid v.$pub-yellow;
+    padding-top: v.$spacing-4;
+    text-align: center;
+    font-size: v.$font-size-sm;
+  }
+}
+
+// Slider components
+.slider {
+  border-radius: v.$radius-lg;
+  box-shadow: v.$shadow-xl;
+  width: 100%;
+  overflow: hidden;
+  
+  &__image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    object-position: bottom;
+    
+    @include m.respond-to(sm) {
+      height: 400px;
+    }
+    
+    @include m.respond-to(md) {
+      height: 500px;
+    }
+    
+    @include m.respond-to(lg) {
+      height: 600px;
+    }
+  }
+}
+
+// Mobile menu
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 16rem;
+  background-color: v.$white;
+  border-radius: v.$radius-lg;
+  box-shadow: v.$shadow-xl;
+  padding-top: v.$spacing-4;
+  padding-bottom: v.$spacing-4;
+  
+  &__link {
+    display: block;
+    padding: v.$spacing-2 v.$spacing-6;
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: rgba(v.$pub-yellow, 0.1);
+    }
+  }
+  
+  &__section {
+    padding: v.$spacing-4 v.$spacing-6;
+    border-top: 1px solid v.$gray-200;
+  }
+}
+
+// Custom swiper pagination
+:global {
+  .swiper-pagination-bullet {
+    background: v.$pub-amber;
+    opacity: 0.7;
+    
+    &-active {
+      opacity: 1;
+      background: v.$pub-amber;
+    }
+  }
+}

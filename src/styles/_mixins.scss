@@ -1,0 +1,138 @@
+@use 'variables' as v;
+
+// Responsive mixins
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: v.$breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: v.$breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: v.$breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: v.$breakpoint-xl) { @content; }
+  } @else if $breakpoint == 2xl {
+    @media (min-width: v.$breakpoint-2xl) { @content; }
+  }
+}
+
+// Flexbox center
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Card styling
+@mixin card {
+  background-color: rgba(v.$white, 0.95);
+  border-radius: v.$radius-lg;
+  box-shadow: v.$shadow-xl;
+  overflow: hidden;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+// Text truncation
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Hover effects
+@mixin hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: v.$shadow-xl;
+  }
+}
+
+@mixin hover-color($color) {
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: $color;
+  }
+}
+
+// Button styles
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  gap: v.$spacing-2;
+  padding: v.$spacing-3 v.$spacing-6;
+  border-radius: v.$radius-lg;
+  font-weight: 500;
+  transition: v.$transition-standard;
+}
+
+@mixin button-primary {
+  @include button-base;
+  background-color: v.$pub-yellow;
+  color: v.$pub-text-dark;
+  
+  &:hover {
+    background-color: v.$pub-amber;
+    color: v.$white;
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background-color: v.$pub-amber;
+  color: v.$white;
+  
+  &:hover {
+    background-color: v.$pub-yellow;
+    color: v.$pub-text-dark;
+  }
+}
+
+// Section styling
+@mixin section-padding {
+  padding-top: v.$spacing-8;
+  padding-bottom: v.$spacing-8;
+  
+  @include respond-to(md) {
+    padding-top: v.$spacing-12;
+    padding-bottom: v.$spacing-12;
+  }
+}
+
+// Image styling
+@mixin responsive-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+// Accessible focus styles
+@mixin focus-outline {
+  &:focus {
+    outline: 2px solid v.$pub-amber;
+    outline-offset: 2px;
+  }
+}
+
+// Interactive link styling
+@mixin interactive-link {
+  position: relative;
+  transition: color 0.2s ease;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+  
+  &:hover::after {
+    width: 100%;
+  }
+}

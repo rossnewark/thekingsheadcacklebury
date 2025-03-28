@@ -2,18 +2,22 @@ import { useState, useEffect, useRef } from 'react';
 import { MapPin, Phone, Mail, Clock, Facebook, Menu, X } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
 import FacebookPosts from './components/facebookPosts';
 import FacebookEvents from './components/facebookEvents';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+// Define a type for the timer to fix the NodeJS namespace issue
+type TimeoutType = ReturnType<typeof setTimeout>;
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [rotation, setRotation] = useState(0);
   const lastScrollY = useRef(0);
-  const scrollTimer = useRef<number | null>(null);
+  const scrollTimer = useRef<TimeoutType | null>(null);
   const isScrolling = useRef(false);
+  const logoRotationStyle = { transform: `rotate(${rotation}deg)` };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,7 +49,7 @@ function App() {
       }
 
       // Set new timer to detect when scrolling stops
-      scrollTimer.current = window.setTimeout(() => {
+      scrollTimer.current = setTimeout(() => {
         isScrolling.current = false;
 
         // If we've scrolled back to the top, reset rotation
@@ -75,6 +79,10 @@ function App() {
     setTimeout(() => {
       setRotation(0);
     }, 500);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(prev => !prev);
   };
 
   const foodImages = [
@@ -107,6 +115,7 @@ function App() {
                   transform: `rotate(${rotation}deg)`,
                   transition: 'transform 0.3s ease-out, width 0.3s ease, height 0.3s ease'
                 }}
+                aria-label="Kings Head Logo - Click to scroll to top"
               >
                 <img
                   src="/kingshead_cacklebury_logo.svg"
@@ -125,18 +134,26 @@ function App() {
 
             {/* Mobile Menu Button */}
             <button
+              type="button"
               className={`md:hidden p-2 transition-colors ${isScrolled ? 'text-black' : 'text-white'}`}
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={toggleMenu}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-              <div className="absolute top-full right-0 w-64 bg-white rounded-lg shadow-xl py-4 md:hidden">
-                <a href="#food" className="block px-6 py-2 hover:bg-[#f3df63]/10">Sunday Lunch</a>
-                <a href="#harveys" className="block px-6 py-2 hover:bg-[#f3df63]/10">Harvey's Ales</a>
-                <a href="#events" className="block px-6 py-2 hover:bg-[#f3df63]/10">Events</a>
+              <div 
+                className="absolute top-full right-0 w-64 bg-white rounded-lg shadow-xl py-4 md:hidden"
+                role="menu"
+                aria-orientation="vertical"
+              >
+                <a href="#food" className="block px-6 py-2 hover:bg-[#f3df63]/10" role="menuitem">Sunday Lunch</a>
+                <a href="#harveys" className="block px-6 py-2 hover:bg-[#f3df63]/10" role="menuitem">Harvey's Ales</a>
+                <a href="#events" className="block px-6 py-2 hover:bg-[#f3df63]/10" role="menuitem">Events</a>
+                <a href="#facebook-feed" className="block px-6 py-2 hover:bg-[#f3df63]/10" role="menuitem">Facebook Feed</a>
                 <div className="px-6 py-4 border-t border-gray-200">
                   <a href="tel:01323440447" className="flex items-center gap-2 hover:text-[#e6a648]">
                     <Phone className="w-4 h-4" />
@@ -144,7 +161,7 @@ function App() {
                   </a>
                 </div>
                 <div className="px-6 py-4 border-t border-gray-200">
-                  <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I’d like to know more about..." className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
+                  <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..." className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
                     <Mail className="w-4 h-4" />
                     lisa.kingshead@hotmail.com
                   </a>
@@ -164,11 +181,15 @@ function App() {
             )}
 
             {/* Desktop Menu */}
-            <div className={`hidden md:flex space-x-6 transition-colors ${isScrolled ? 'text-black' : 'text-white'}`}>
+            <div 
+              className={`hidden md:flex space-x-6 transition-colors ${isScrolled ? 'text-black' : 'text-white'}`}
+              role="navigation"
+            >
               <a href="#food" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Sunday Lunch</a>
               <a href="#harveys" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Harvey's Ales</a>
               <a href="#events" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Events</a>
-              <a href="#hero" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Contact</a>
+              <a href="#facebook-feed" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Facebook</a>
+              <a href="#contact" className={`hover:text-[#ffffff] ${isScrolled ? 'text-black' : ''}`}>Contact</a>
             </div>
           </nav>
         </div>
@@ -185,7 +206,7 @@ function App() {
           <div className="container mx-auto px-4 py-6">
             <div className="pt-8">
               <div className="mt-12 md:mt-16 max-w-4xl mx-auto text-center">
-                <h2 className="text-[#ffffff] text-3xl md:text-5xl font-bold mb-0">Your Local Community Pub Since 1850</h2>
+                <h2 className="text-[#f3df63] text-3xl md:text-5xl font-bold mb-0">Your Local Community Pub Since 1850</h2>
                 <p className="text-white text-xl md:text-2xl mb-2">Experience Sussex hospitality, Harvey's Ales & home-cooked food in our historic Hailsham pub</p>
                 <a
                   href="tel:01323440447"
@@ -197,7 +218,7 @@ function App() {
               </div>
 
               <div className="relative z-10 mt-6">
-                <div className="grid md:grid-cols-3 gap-6">
+                <div id="contact" className="grid md:grid-cols-3 gap-6">
                   {/* Opening Hours */}
                   <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden">
                     <div className="p-[2px]">
@@ -234,11 +255,11 @@ function App() {
                         <MapPin className="text-[#e6a648]" />
                         <h2 className="text-black text-xl font-semibold">Find Us</h2>
                       </div>
-                      <p className="text-gray-700">
+                      <address className="text-gray-700 not-italic">
                         146 South Road<br />
                         Hailsham, East Sussex<br />
                         BN27 3NJ
-                      </p>
+                      </address>
                     </div>
                   </div>
 
@@ -261,7 +282,7 @@ function App() {
                           <Phone className="w-4 h-4" />
                           01323 440447
                         </a>
-                        <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I’d like to know more about..." className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
+                        <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..." className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full">
                           <Mail className="w-4 h-4" />
                           lisa.kingshead@hotmail.com
                         </a>
@@ -271,6 +292,7 @@ function App() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
+                            aria-label="Visit our Facebook page"
                           >
                             <Facebook className="w-4 h-4" />
                             <span className="leading-none break-all">facebook.com/KingsHeadCacklebury</span>
@@ -305,7 +327,7 @@ function App() {
                     <div className="w-full rounded-lg overflow-hidden">
                       <img
                         src={image}
-                        alt={`Slide ${index + 1}`}
+                        alt={`Sunday Roast Photo ${index + 1}`}
                         className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover object-bottom"
                       />
                     </div>
@@ -328,7 +350,7 @@ function App() {
               </p>
               <p className="text-lg text-gray-700 mb-6">
                 What makes our roasts truly special? They're personally prepared by our landlord, <strong>Pete Loft – better
-                  known as ‘Lofty’</strong>. A <em>highly trained chef</em> with experience in some of London’s finest eateries,
+                  known as 'Lofty'</strong>. A <em>highly trained chef</em> with experience in some of London's finest eateries,
                 Lofty brings his passion for great food to every dish, making your Sunday lunch an experience to remember.
               </p>
 
@@ -389,7 +411,7 @@ function App() {
                     <div className="w-full rounded-lg overflow-hidden">
                       <img
                         src={image}
-                        alt={`Slide ${index + 1}`}
+                        alt={`Harvey's Ale Photo ${index + 1}`}
                         className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover object-bottom"
                       />
                     </div>
@@ -401,63 +423,34 @@ function App() {
         </div>
       </section>
 
-{/* Facebook Posts Section */}
-<section id="facebook-updates" className="py-6 bg-[#f3df63]/10">
-  <div className="container mx-auto px-4">
-    <h2 className="text-4xl font-bold text-center mb-6">Latest Updates</h2>
-    <FacebookPosts limit={3} />
-  </div>
-</section>
-
-{/* Facebook Events Section - Replace or complement your existing Events section */}
-<section id="events" className="py-6 bg-white">
-  <div className="container mx-auto px-4">
-    <h2 className="text-4xl font-bold text-center mb-6">What's On at the Pub</h2>
-    <FacebookEvents limit={3} />
-  </div>
-</section>
-
       {/* Events Section */}
       <section id="events" className="py-6 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-6">What's On at the Pub</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
-              <img
-                src="/roast_lunch.jpg"
-                alt="Sunday Roast"
-                className="w-full h-48 object-cover object-bottom"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Sunday Roast</h3>
-                <p className="text-gray-600">Every Sunday</p>
-                <p className="mt-2">Join us for our famous Sunday roast with all the trimmings!</p>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
-              <img
-                src="/quiz.jpg"
-                alt="Pub Quiz"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Pub Quiz Night</h3>
-                <p className="text-gray-600">Every Sunday Evening</p>
-                <p className="mt-2">Test your knowledge and win great prizes!</p>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
-              <img
-                src="/live_music.jpg"
-                alt="Live Music"
-                className="w-full h-48 object-cover object-top"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Live Music</h3>
-                <p className="text-gray-600">Watch this space!</p>
-                <p className="mt-2">Local bands & singers on our purpose built stage in the large pub garden</p>
-              </div>
-            </div>
+          <FacebookEvents limit={3} />
+        </div>
+      </section>
+
+      {/* Facebook Feed Section */}
+      <section id="facebook-feed" className="py-8 bg-[#f3df63]/10">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <Facebook className="text-[#e6a648] w-8 h-8" />
+            <h2 className="text-4xl font-bold text-center">Latest from Our Facebook</h2>
+          </div>
+          
+          <FacebookPosts limit={3} />
+          
+          <div className="text-center mt-8">
+            <a 
+              href="https://www.facebook.com/KingsHeadCacklebury"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-6 py-3 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
+            >
+              <Facebook className="w-5 h-5" />
+              Visit Our Facebook Page
+            </a>
           </div>
         </div>
       </section>
@@ -479,16 +472,17 @@ function App() {
               </div>
               <p>Your local community pub in Hailsham since 1850</p>
             </div>
-            <div>
+            <nav>
               <h3 className="text-white text-xl font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li><a href="#hero" className="hover:text-black">About Us</a></li>
                 <li><a href="#food" className="hover:text-black">Sunday Lunch</a></li>
                 <li><a href="#harveys" className="hover:text-black">Harvey's Ales</a></li>
                 <li><a href="#events" className="hover:text-black">Events</a></li>
-                <li><a href="#hero" className="hover:text-black">Contact</a></li>
+                <li><a href="#facebook-feed" className="hover:text-black">Facebook</a></li>
+                <li><a href="#contact" className="hover:text-black">Contact</a></li>
               </ul>
-            </div>
+            </nav>
             <div>
               <h3 className="text-white text-xl font-semibold mb-4">Contact Details</h3>
               <ul className="space-y-2">
@@ -499,14 +493,14 @@ function App() {
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I’d like to know more about..." className="flex items-center gap-2 hover:text-black">
+                  <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..." className="flex items-center gap-2 hover:text-black">
                     <Mail className="w-4 h-4" />
                     lisa.kingshead@hotmail.com
                   </a>
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
-                  146 South Road, Hailsham
+                  <address className="not-italic">146 South Road, Hailsham</address>
                 </li>
               </ul>
             </div>
@@ -517,7 +511,8 @@ function App() {
                   href="https://www.facebook.com/KingsHeadCacklebury"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
+                  className="flex items-center gap-2 hover:text-black break-words max-w-full"
+                  aria-label="Facebook Page"
                 >
                   <Facebook className="w-4 h-4" />
                   <span className="leading-none break-all">facebook.com/KingsHeadCacklebury</span>
