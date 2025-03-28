@@ -13,8 +13,10 @@ const FacebookPosts: React.FC<FacebookPostsProps> = ({ limit = 3 }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        console.log('Fetching posts with limit:', limit);
         setLoading(true);
         const postsData = await facebookService.getPosts(limit);
+        console.log('Posts data received:', postsData);
         setPosts(postsData);
         setError(null);
       } catch (err) {
@@ -60,10 +62,10 @@ const FacebookPosts: React.FC<FacebookPostsProps> = ({ limit = 3 }) => {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[...Array(limit)].map((_, index) => (
           <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden border border-[#e6a648] animate-pulse">
-            <div className="w-full h-64 bg-gray-200"></div>
+            <div className="responsive-image-container responsive-image-container--4-3 bg-gray-200"></div>
             <div className="p-6 space-y-3">
               <div className="h-4 bg-gray-200 rounded w-full"></div>
               <div className="h-4 bg-gray-200 rounded w-full"></div>
@@ -107,21 +109,23 @@ const FacebookPosts: React.FC<FacebookPostsProps> = ({ limit = 3 }) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {posts.map(post => (
-        <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-[#e6a648]">
+        <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-[#e6a648] h-full flex flex-col">
           {post.full_picture && (
-            <img
-              src={post.full_picture}
-              alt="Post image"
-              className="w-full h-64 object-cover"
-            />
+            <div className="responsive-image-container responsive-image-container--4-3 border-b border-[#e6a648]/20">
+              <img
+                src={post.full_picture}
+                alt="Facebook post image"
+                className="responsive-image responsive-image--mobile-contain md:responsive-image--cover"
+              />
+            </div>
           )}
-          <div className="p-6">
+          <div className="p-6 flex-grow">
             {post.message && (
               <p className="text-gray-700 mb-4">{post.message}</p>
             )}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mt-auto">
               <span className="text-gray-500 text-sm">
                 {formatDate(post.created_time)}
               </span>
