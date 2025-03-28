@@ -296,3 +296,108 @@
     }
   }
 }
+
+/* Add these styles to your main.scss file */
+
+/* Universal image container class */
+.responsive-image-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    /* Use padding-top with percentage to maintain aspect ratio */
+    padding-top: 56.25%; /* 16:9 Aspect Ratio (9/16 = 0.5625 = 56.25%) */
+    /* For 4:3 aspect ratio, use 75% (3/4 = 0.75 = 75%) */
+  }
+  
+  /* For a more square-ish image */
+  .responsive-image-container--4-3 {
+    padding-top: 75%; /* 4:3 Aspect Ratio */
+  }
+  
+  /* Image inside container */
+  .responsive-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Shows whole image instead of cropping */
+    background-color: #f8f8f8; /* Light background for transparent images */
+  }
+  
+  /* For cases where you want to fill the container, but prioritize showing important parts */
+  .responsive-image--cover {
+    object-fit: cover;
+    object-position: center; /* Default position */
+  }
+  
+  .responsive-image--cover-top {
+    object-position: center top;
+  }
+  
+  .responsive-image--cover-bottom {
+    object-position: center bottom;
+  }
+  
+  /* Apply these modifiers for different device sizes */
+  @media (max-width: 640px) {
+    /* For mobile, prioritize showing the whole image */
+    .responsive-image--mobile-contain {
+      object-fit: contain;
+    }
+    
+    /* Adjust container height for mobile if needed */
+    .responsive-image-container--mobile-taller {
+      padding-top: 85%; /* Taller aspect ratio for mobile */
+    }
+  }
+  
+  /* For fixed height scenarios with responsive width */
+  .fixed-height-image-container {
+    width: 100%;
+    height: 300px; /* Base height */
+    overflow: hidden;
+  }
+  
+  @media (min-width: 640px) {
+    .fixed-height-image-container {
+      height: 350px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .fixed-height-image-container {
+      height: 400px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .fixed-height-image-container {
+      height: 450px;
+    }
+  }
+  
+  /* For images in cards or smaller containers */
+  .card-image {
+    width: 100%;
+    aspect-ratio: 16/9; /* Modern browsers support aspect-ratio */
+    object-fit: cover;
+  }
+  
+  /* Fallback for browsers that don't support aspect-ratio */
+  @supports not (aspect-ratio: 16/9) {
+    .card-image-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+    }
+    
+    .card-image-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
