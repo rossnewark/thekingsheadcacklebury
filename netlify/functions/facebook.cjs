@@ -1,10 +1,10 @@
 const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
+const { getStore } = require('@netlify/blobs');
 
 // Configuration
 const PAGE_ID = '56005271774'; // Kings Head Cacklebury Facebook page ID
-const TOKEN_FILE_PATH = path.join(__dirname, '.token.json');
+const STORE_NAME = 'facebook-tokens';
+const TOKEN_KEY = 'access-token';
 
 // Fallback data for when Facebook API is unavailable
 const FALLBACK_DATA = {
@@ -83,17 +83,19 @@ function getNextSaturday(hours, minutes) {
   return date;
 }
 
-// Helper function to read the current token from file
+// Helper function to read the current token from KV store
 async function getToken() {
   try {
-    if (fs.existsSync(TOKEN_FILE_PATH)) {
-      const data = fs.readFileSync(TOKEN_FILE_PATH, 'utf8');
+    const store = getStore(STORE_NAME);
+    const data = await store.get(TOKEN_KEY);
+    
+    if (data) {
       const tokenData = JSON.parse(data);
       return tokenData.token;
     }
     return process.env.FACEBOOK_LONG_LIVED_TOKEN;
   } catch (error) {
-    console.error('Error reading token file:', error);
+    console.error('Error reading token from KV store:', error);
     return process.env.FACEBOOK_LONG_LIVED_TOKEN;
   }
 }
@@ -101,6 +103,10 @@ async function getToken() {
 // Get Facebook posts
 async function getFacebookPosts(token) {
   try {
+    if (!token) {
+      throw new Error('No Facebook token available');
+    }
+    
     // Attempt to use the API
     const response = await axios.get(`https://graph.facebook.com/v19.0/${PAGE_ID}/posts`, {
       params: {
@@ -112,7 +118,8 @@ async function getFacebookPosts(token) {
     
     return response.data.data;
   } catch (error) {
-    console.error('Error fetching Facebook posts:', error.response ? error.response.data : error.message);
+    console.error('Error fetching Facebook posts:', 
+      error.response ? JSON.stringify(error.response.data) : error.message);
     
     // Use fallback data
     console.log('Using fallback posts data');
@@ -123,6 +130,10 @@ async function getFacebookPosts(token) {
 // Get Facebook events
 async function getFacebookEvents(token) {
   try {
+    if (!token) {
+      throw new Error('No Facebook token available');
+    }
+    
     // Attempt to use the API
     const response = await axios.get(`https://graph.facebook.com/v19.0/${PAGE_ID}/events`, {
       params: {
@@ -134,11 +145,32 @@ async function getFacebookEvents(token) {
     
     return response.data.data;
   } catch (error) {
-    console.error('Error fetching Facebook events:', error.response ? error.response.data : error.message);
+    console.error('Error fetching Facebook events:', 
+      error.response ? JSON.stringify(error.response.data) : error.message);
     
     // Use fallback data
     console.log('Using fallback events data');
     return FALLBACK_DATA.events;
+  }
+}
+
+// Trigger token refresh via the token manager
+async function refreshToken() {
+  try {
+    // Get the site URL dynamically
+    const siteUrl = process.env.URL || process.env.DEPLOY_PRIME_URL || 'http://localhost:8888';
+    
+    // Make the request to token-manager
+    const response = await axios.get(`${siteUrl}/.netlify/functions/token-manager`, {
+      headers: {
+        'x-api-key': 'facebook-function'
+      }
+    });
+    
+    return response.data.success;
+  } catch (error) {
+    console.error('Error refreshing token:', error.message);
+    return false;
   }
 }
 
@@ -159,15 +191,18 @@ exports.handler = async function(event, context) {
     };
   }
 
-  const type = event.queryStringParameters ? event.queryStringParameters.type : 'posts';
+  // Extract query parameters
+  const params = event.queryStringParameters || {};
+  const type = params.type || 'posts';
+  const limit = parseInt(params.limit) || 5;
   
   try {
     // Try to trigger token refresh first
     try {
-      await axios.get('/.netlify/functions/token-manager');
+      await refreshToken();
     } catch (refreshError) {
-      console.warn('Token manager error:', refreshError.message);
-      // Continue anyway, as we'll use the current token file
+      console.warn('Token refresh error:', refreshError.message);
+      // Continue anyway, as we'll use the current token
     }
     
     // Get the current token

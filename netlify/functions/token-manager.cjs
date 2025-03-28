@@ -1,41 +1,60 @@
 const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
+const { getStore } = require('@netlify/blobs');
 
-// Configuration
-const APP_ID = process.env.FACEBOOK_APP_ID || '1294804134917215';
-const APP_SECRET = process.env.FACEBOOK_APP_SECRET || '24bd37d51788fe07e36aaad8a28bc005';
-const TOKEN_FILE_PATH = path.join(__dirname, '.token.json');
+// Configuration - get values from environment variables without fallbacks
+const APP_ID = process.env.FACEBOOK_APP_ID;
+const APP_SECRET = process.env.FACEBOOK_APP_SECRET;
+const DEFAULT_TOKEN = process.env.FACEBOOK_LONG_LIVED_TOKEN;
 
-// Helper function to read the current token from file
-async function readTokenFile() {
+// Token store using Netlify's KV store
+const STORE_NAME = 'facebook-tokens';
+const TOKEN_KEY = 'access-token';
+
+// Helper function to read the current token from KV store
+async function getStoredToken() {
   try {
-    if (fs.existsSync(TOKEN_FILE_PATH)) {
-      const data = fs.readFileSync(TOKEN_FILE_PATH, 'utf8');
+    const store = getStore(STORE_NAME);
+    const data = await store.get(TOKEN_KEY);
+    
+    if (data) {
       return JSON.parse(data);
     }
-    return { token: process.env.FACEBOOK_LONG_LIVED_TOKEN, refreshed: null };
+    
+    // No token in store, use the environment variable and store it
+    const initialToken = {
+      token: DEFAULT_TOKEN,
+      refreshed: null
+    };
+    
+    await store.set(TOKEN_KEY, JSON.stringify(initialToken));
+    return initialToken;
   } catch (error) {
-    console.error('Error reading token file:', error);
-    return { token: process.env.FACEBOOK_LONG_LIVED_TOKEN, refreshed: null };
+    console.error('Error reading token from KV store:', error);
+    return { token: DEFAULT_TOKEN, refreshed: null };
   }
 }
 
-// Helper function to write token to file
-async function writeTokenFile(tokenData) {
+// Helper function to write token to KV store
+async function saveToken(tokenData) {
   try {
-    fs.writeFileSync(TOKEN_FILE_PATH, JSON.stringify(tokenData), 'utf8');
+    const store = getStore(STORE_NAME);
+    await store.set(TOKEN_KEY, JSON.stringify(tokenData));
     return true;
   } catch (error) {
-    console.error('Error writing token file:', error);
+    console.error('Error writing token to KV store:', error);
     return false;
   }
 }
 
-// Refresh token
+// Refresh token through Facebook API
 async function refreshToken(token) {
+  // Validate we have the necessary credentials
+  if (!APP_ID || !APP_SECRET) {
+    throw new Error('Missing required Facebook app credentials');
+  }
+
   try {
-    console.log('Attempting to refresh token...');
+    console.log('Attempting to refresh Facebook token...');
     const response = await axios.get('https://graph.facebook.com/v19.0/oauth/access_token', {
       params: {
         grant_type: 'fb_exchange_token',
@@ -51,7 +70,8 @@ async function refreshToken(token) {
     }
     throw new Error('No access token in response');
   } catch (error) {
-    console.error('Error refreshing token:', error.response ? error.response.data : error.message);
+    console.error('Error refreshing token:', 
+      error.response ? JSON.stringify(error.response.data) : error.message);
     throw error;
   }
 }
@@ -72,8 +92,13 @@ function needsRefresh(lastRefreshed) {
 async function getCurrentToken() {
   try {
     // Read current token data
-    const tokenData = await readTokenFile();
+    const tokenData = await getStoredToken();
     const currentToken = tokenData.token;
+    
+    // Check if we have a token
+    if (!currentToken) {
+      throw new Error('No Facebook token available');
+    }
     
     // Check if token needs refreshing
     if (needsRefresh(tokenData.refreshed)) {
@@ -85,18 +110,18 @@ async function getCurrentToken() {
         };
         
         // Save new token data
-        await writeTokenFile(newTokenData);
-        return newToken;
+        await saveToken(newTokenData);
+        return { token: newToken, isNew: true };
       } catch (refreshError) {
-        console.warn('Failed to refresh token, using existing token', refreshError.message);
-        return currentToken;
+        console.warn('Failed to refresh token, using existing token:', refreshError.message);
+        return { token: currentToken, isNew: false, error: refreshError.message };
       }
     }
     
-    return currentToken;
+    return { token: currentToken, isNew: false };
   } catch (error) {
     console.error('Error getting current token:', error);
-    return process.env.FACEBOOK_LONG_LIVED_TOKEN;
+    return { token: DEFAULT_TOKEN, isNew: false, error: error.message };
   }
 }
 
@@ -104,7 +129,7 @@ exports.handler = async function(event, context) {
   // Set CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
   };
 
@@ -118,7 +143,7 @@ exports.handler = async function(event, context) {
   }
   
   try {
-    const token = await getCurrentToken();
+    const result = await getCurrentToken();
     
     // Only return the token status, not the actual token for security
     return {
@@ -126,7 +151,11 @@ exports.handler = async function(event, context) {
       headers,
       body: JSON.stringify({
         success: true,
-        message: 'Token is valid and up to date'
+        refreshed: result.isNew,
+        message: result.isNew 
+          ? 'Token was refreshed successfully' 
+          : 'Token is valid and up to date',
+        error: result.error || null
       })
     };
   } catch (error) {
