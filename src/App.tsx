@@ -92,13 +92,13 @@ function App() {
   ];
 
   const harveysImages = [
-    "/harveys_pumps.jpg",
-    "/guiness.jpg",
-    "/cruzcampo.jpg",
-    "/harveys_best.jpg",
-    "/guiness_zero.jpg",
-    "/harveys_pale.jpg",
-    "/cruzcampo_beer.jpg",
+    "/harveys_pumps.png",
+    "/guiness.png",
+    "/cruzcampo.png",
+    "/harveys_best.png",
+    "/guiness_glass.png",
+    "/harveys_pale.png",
+    "/wine.png",
   ];
 
   return (
@@ -292,11 +292,32 @@ function App() {
         id="hero"
         className="relative flex flex-col justify-center bg-cover bg-center h-[1900px] sm:h-[2256px] md:h-[700px] lg:h-[850px]"
         style={{
-          backgroundImage: 'url("/bar.jpg")',
-          backgroundAttachment: "fixed",
           width: "100%",
+          minHeight: "760px",
+          overflow: "hidden",
         }}
       >
+
+        {/* Video Background */}
+        <div className="absolute inset-0 z-0">
+          <video
+              preload="metadata" // Only preloads video metadata, not the entire file
+              disablePictureInPicture // Prevents picture-in-picture mode
+              disableRemotePlayback // Prevents casting to other devices
+              className="absolute w-full h-full object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster="/bar.jpg"
+            
+          >
+            <source src="/bubbles.mp4" type="video/mp4" />
+            {/* Fallback for browsers that don't support video */}
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
         <div className="absolute inset-0 bg-black/40">
           <div className="container mx-auto px-4 py-6">
             <div className="pt-8">
