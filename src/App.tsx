@@ -101,6 +101,41 @@ function App() {
     "/wine.png",
   ];
 
+  function useVideoScaling() {
+    const [videoStyle, setVideoStyle] = useState({});
+    
+    useEffect(() => {
+      const updateVideoStyle = () => {
+        const isMobile = window.innerWidth < 768;
+        if (isMobile) {
+          setVideoStyle({
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center 20%',
+            transform: 'translateY(-20%)'
+          });
+        } else {
+          setVideoStyle({
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+          });
+        }
+      };
+      
+      updateVideoStyle();
+      window.addEventListener('resize', updateVideoStyle);
+      return () => window.removeEventListener('resize', updateVideoStyle);
+    }, []);
+    
+    return videoStyle;
+  }
+  
+  // Then in your component:
+  const videoStyle = useVideoScaling();
+
   return (
     <div className="min-h-screen bg-white">
       {/* Sticky Header */}
@@ -304,7 +339,7 @@ function App() {
               preload="metadata" // Only preloads video metadata, not the entire file
               disablePictureInPicture // Prevents picture-in-picture mode
               disableRemotePlayback // Prevents casting to other devices
-              className="absolute w-full h-full object-cover"
+              style={videoStyle}
               autoPlay
               loop
               muted
