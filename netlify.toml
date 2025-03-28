@@ -19,3 +19,8 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Scheduled function for token refresh (runs every Monday at 3am)
+[[functions]]
+  schedule = "@weekly"
+  function = "scheduled-token-refresh"

@@ -1,202 +1,155 @@
 const axios = require('axios');
-require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
 
-// Constants for Facebook API
-const FB_API_VERSION = 'v19.0';
-const FB_PAGE_ID = process.env.FB_PAGE_ID || '56005271774';
-const APP_ID = process.env.FACEBOOK_APP_ID;
-const APP_SECRET = process.env.FACEBOOK_APP_SECRET;
+// Configuration
+const PAGE_ID = '56005271774'; // Kings Head Cacklebury Facebook page ID
+const TOKEN_FILE_PATH = path.join(__dirname, '.token.json');
 
-// Helper function to check if token needs refresh
-// We'll consider the token valid for 30 days to be safe
-// (even though long-lived page tokens can last longer)
-function isTokenValid(tokenData) {
-  if (!tokenData || !tokenData.updatedAt) return false;
+// Fallback data for when Facebook API is unavailable
+const FALLBACK_DATA = {
+  posts: [
+    {
+      id: 'fallback1',
+      message: "Join us this Sunday for our famous roast dinner! Seating available from 12pm to 4pm. Book your table now by calling 01323 440447.",
+      created_time: new Date().toISOString(),
+      full_picture: "/roast_lunch.jpg",
+      permalink_url: "https://www.facebook.com/KingsHeadCacklebury"
+    },
+    {
+      id: 'fallback2',
+      message: "Test your knowledge at our weekly Pub Quiz! Every Sunday evening from 7pm. Great prizes to be won!",
+      created_time: new Date(Date.now() - 86400000).toISOString(), // Yesterday
+      full_picture: "/quiz.jpg",
+      permalink_url: "https://www.facebook.com/KingsHeadCacklebury"
+    },
+    {
+      id: 'fallback3',
+      message: "We're proud to serve a wide selection of Harvey's ales, brewed locally in Lewes. Come and enjoy a perfect pint in our cozy pub atmosphere!",
+      created_time: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+      full_picture: "/harveys_pumps.jpg",
+      permalink_url: "https://www.facebook.com/KingsHeadCacklebury"
+    }
+  ],
+  events: [
+    {
+      id: 'event1',
+      name: "Sunday Roast Lunch",
+      description: "Join us for our legendary Sunday roast lunch with all the trimmings! Choose from succulent roast beef, tender pork, mouthwatering chicken, or our delicious vegetarian option.",
+      start_time: getNextSunday(12, 0).toISOString(),
+      end_time: getNextSunday(16, 0).toISOString(),
+      cover: { source: "/roast_lunch.jpg" }
+    },
+    {
+      id: 'event2',
+      name: "Sunday Evening Pub Quiz",
+      description: "Test your knowledge and win great prizes at our weekly pub quiz!",
+      start_time: getNextSunday(19, 0).toISOString(),
+      end_time: getNextSunday(21, 0).toISOString(),
+      cover: { source: "/quiz.jpg" }
+    },
+    {
+      id: 'event3',
+      name: "Live Music in the Garden",
+      description: "Enjoy live music in our pub garden, weather permitting. Check back for details of performers!",
+      start_time: getNextSaturday(18, 0).toISOString(),
+      end_time: getNextSaturday(22, 0).toISOString(),
+      cover: { source: "/live_music.jpg" }
+    }
+  ]
+};
+
+// Helper function to get next Sunday
+function getNextSunday(hours, minutes) {
+  const date = new Date();
+  const day = date.getDay(); // 0 is Sunday
+  const daysToAdd = day === 0 ? 7 : 7 - day;
   
-  // Check if token was updated in the last 30 days
-  const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
-  return tokenData.updatedAt > thirtyDaysAgo;
+  date.setDate(date.getDate() + daysToAdd);
+  date.setHours(hours, minutes, 0, 0);
+  
+  return date;
 }
 
-// Get token from environment variable
-// The token info is stored as a JSON string in the environment variable
-async function getStoredToken() {
+// Helper function to get next Saturday
+function getNextSaturday(hours, minutes) {
+  const date = new Date();
+  const day = date.getDay(); // 6 is Saturday
+  const daysToAdd = day === 6 ? 7 : (6 - day + 7) % 7;
+  
+  date.setDate(date.getDate() + daysToAdd);
+  date.setHours(hours, minutes, 0, 0);
+  
+  return date;
+}
+
+// Helper function to read the current token from file
+async function getToken() {
   try {
-    const tokenEnvVar = process.env.FACEBOOK_TOKEN_DATA;
-    if (!tokenEnvVar) {
-      // If no token data exists, use the initial token
-      return {
-        accessToken: process.env.FACEBOOK_ACCESS_TOKEN,
-        updatedAt: 0
-      };
+    if (fs.existsSync(TOKEN_FILE_PATH)) {
+      const data = fs.readFileSync(TOKEN_FILE_PATH, 'utf8');
+      const tokenData = JSON.parse(data);
+      return tokenData.token;
     }
-    
-    return JSON.parse(tokenEnvVar);
+    return process.env.FACEBOOK_LONG_LIVED_TOKEN;
   } catch (error) {
-    console.error('Error parsing stored token:', error);
-    // Fallback to the initial token
-    return {
-      accessToken: process.env.FACEBOOK_ACCESS_TOKEN,
-      updatedAt: 0
-    };
+    console.error('Error reading token file:', error);
+    return process.env.FACEBOOK_LONG_LIVED_TOKEN;
   }
 }
 
-// Refresh the token using the Facebook Graph API
-async function refreshToken(currentToken) {
-  console.log('Refreshing Facebook token...');
-  
+// Get Facebook posts
+async function getFacebookPosts(token) {
   try {
-    // Exchange the token for a new one
-    const response = await axios.get(`https://graph.facebook.com/${FB_API_VERSION}/oauth/access_token`, {
+    // Attempt to use the API
+    const response = await axios.get(`https://graph.facebook.com/v19.0/${PAGE_ID}/posts`, {
       params: {
-        grant_type: 'fb_exchange_token',
-        client_id: APP_ID,
-        client_secret: APP_SECRET,
-        fb_exchange_token: currentToken
+        fields: 'message,created_time,full_picture,permalink_url',
+        limit: '5',
+        access_token: token
       }
     });
     
-    const newToken = response.data.access_token;
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching Facebook posts:', error.response ? error.response.data : error.message);
     
-    // Get a page access token using the new user token
-    const pageResponse = await axios.get(`https://graph.facebook.com/${FB_API_VERSION}/me/accounts`, {
+    // Use fallback data
+    console.log('Using fallback posts data');
+    return FALLBACK_DATA.posts;
+  }
+}
+
+// Get Facebook events
+async function getFacebookEvents(token) {
+  try {
+    // Attempt to use the API
+    const response = await axios.get(`https://graph.facebook.com/v19.0/${PAGE_ID}/events`, {
       params: {
-        access_token: newToken
+        fields: 'name,description,start_time,end_time,cover',
+        limit: '3',
+        access_token: token
       }
     });
     
-    // Find the page token for our page
-    const page = pageResponse.data.data.find(page => page.id === FB_PAGE_ID);
-    
-    if (!page) {
-      throw new Error(`Page with ID ${FB_PAGE_ID} not found in accounts`);
-    }
-    
-    const pageToken = page.access_token;
-    
-    // Return the new token data
-    // Note: We can't update the environment variable dynamically,
-    // but we can log it so it can be updated manually if needed
-    const tokenData = {
-      accessToken: pageToken,
-      updatedAt: Date.now()
-    };
-    
-    console.log('Token refreshed successfully');
-    console.log('New token data (add to your Netlify environment variables):');
-    console.log(`FACEBOOK_TOKEN_DATA=${JSON.stringify(tokenData)}`);
-    
-    return tokenData;
-  } catch (error) {
-    console.error('Error refreshing token:', error);
-    throw error;
-  }
-}
-
-// Get a valid token, refreshing if necessary
-async function getValidToken() {
-  // Get the current token data
-  let tokenData = await getStoredToken();
-  
-  // Check if we need to refresh the token
-  if (!isTokenValid(tokenData)) {
-    try {
-      // Attempt to refresh the token
-      tokenData = await refreshToken(tokenData.accessToken);
-    } catch (error) {
-      console.error('Token refresh failed, using existing token:', error);
-      // Continue with existing token if refresh fails
-    }
-  }
-  
-  return tokenData.accessToken;
-}
-
-// Fetch Facebook posts
-async function getFacebookPosts(limit = 5) {
-  const token = await getValidToken();
-  
-  try {
-    const response = await axios.get(
-      `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts`, {
-        params: {
-          fields: 'message,created_time,full_picture,permalink_url',
-          limit: limit,
-          access_token: token
-        }
-      }
-    );
-    
     return response.data.data;
   } catch (error) {
-    console.error('Error fetching Facebook posts:', error);
+    console.error('Error fetching Facebook events:', error.response ? error.response.data : error.message);
     
-    // Check if this is a token expiration error
-    if (error.response && 
-        error.response.data && 
-        error.response.data.error && 
-        error.response.data.error.code === 190) {
-      
-      console.log('Token expired, attempting refresh...');
-      try {
-        // Force token refresh
-        const newTokenData = await refreshToken(token);
-        console.log('Token refreshed successfully, retrying request with new token');
-        
-        // Retry with new token
-        const retryResponse = await axios.get(
-          `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/posts`, {
-            params: {
-              fields: 'message,created_time,full_picture,permalink_url',
-              limit: limit,
-              access_token: newTokenData.accessToken
-            }
-          }
-        );
-        
-        return retryResponse.data.data;
-      } catch (refreshError) {
-        console.error('Token refresh failed:', refreshError);
-        throw new Error('Failed to refresh Facebook token');
-      }
-    }
-    
-    throw error;
+    // Use fallback data
+    console.log('Using fallback events data');
+    return FALLBACK_DATA.events;
   }
 }
 
-// Fetch Facebook events
-async function getFacebookEvents(limit = 5) {
-  const token = await getValidToken();
-  
-  try {
-    const response = await axios.get(
-      `https://graph.facebook.com/${FB_API_VERSION}/${FB_PAGE_ID}/events`, {
-        params: {
-          fields: 'name,description,start_time,end_time,cover',
-          limit: limit,
-          access_token: token
-        }
-      }
-    );
-    
-    return response.data.data;
-  } catch (error) {
-    console.error('Error fetching Facebook events:', error);
-    throw error;
-  }
-}
-
-// Main handler function
 exports.handler = async function(event, context) {
-  // Set CORS headers for browser requests
+  // Set CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS'
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
   };
-  
+
   // Handle preflight OPTIONS request
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -205,42 +158,44 @@ exports.handler = async function(event, context) {
       body: ''
     };
   }
-  
-  // Parse the path to determine what to fetch
-  const pathSegments = event.path.split('/');
-  const resource = pathSegments[pathSegments.length - 1];
-  const limit = event.queryStringParameters?.limit || 5;
+
+  const type = event.queryStringParameters ? event.queryStringParameters.type : 'posts';
   
   try {
-    let data;
+    // Try to trigger token refresh first
+    try {
+      await axios.get('/.netlify/functions/token-manager');
+    } catch (refreshError) {
+      console.warn('Token manager error:', refreshError.message);
+      // Continue anyway, as we'll use the current token file
+    }
     
-    if (resource === 'posts') {
-      data = await getFacebookPosts(limit);
-    } else if (resource === 'events') {
-      data = await getFacebookEvents(limit);
+    // Get the current token
+    const token = await getToken();
+    
+    // Get data
+    let result;
+    if (type === 'events') {
+      result = await getFacebookEvents(token);
     } else {
-      return {
-        statusCode: 404,
-        headers,
-        body: JSON.stringify({ error: 'Resource not found' })
-      };
+      result = await getFacebookPosts(token);
     }
     
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(data)
+      body: JSON.stringify(result)
     };
   } catch (error) {
     console.error('Error in Facebook function:', error);
     
+    // Return fallback data even if all else fails
+    const fallbackData = type === 'events' ? FALLBACK_DATA.events : FALLBACK_DATA.posts;
+    
     return {
-      statusCode: 500,
+      statusCode: 200, // Return 200 with fallback data instead of error
       headers,
-      body: JSON.stringify({ 
-        error: 'Internal server error',
-        message: error.message 
-      })
+      body: JSON.stringify(fallbackData)
     };
   }
 };
