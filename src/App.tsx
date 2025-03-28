@@ -402,16 +402,18 @@ function App() {
       </section>
 
 {/* Facebook Posts Section */}
-<section className="py-8 bg-white">
+<section id="facebook-updates" className="py-6 bg-[#f3df63]/10">
   <div className="container mx-auto px-4">
-    <FacebookPosts />
+    <h2 className="text-4xl font-bold text-center mb-6">Latest Updates</h2>
+    <FacebookPosts limit={3} />
   </div>
 </section>
 
 {/* Facebook Events Section - Replace or complement your existing Events section */}
-<section className="py-8 bg-[#f3df63]/10">
+<section id="events" className="py-6 bg-white">
   <div className="container mx-auto px-4">
-    <FacebookEvents />
+    <h2 className="text-4xl font-bold text-center mb-6">What's On at the Pub</h2>
+    <FacebookEvents limit={3} />
   </div>
 </section>
 
