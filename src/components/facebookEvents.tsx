@@ -9,14 +9,15 @@ const FacebookEvents: React.FC<FacebookEventsProps> = ({ limit = 3 }) => {
   const [events, setEvents] = useState<FacebookEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Default image to use when an event doesn't have its own cover image
+  const defaultEventImage = "/kingshead_cacklebury_pub_outside.jpg";
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        console.log('Fetching events with limit:', limit);
         setLoading(true);
         const eventsData = await facebookService.getEvents(limit);
-        console.log('Events data received:', eventsData);
         setEvents(eventsData);
         setError(null);
       } catch (err) {
@@ -42,15 +43,12 @@ const FacebookEvents: React.FC<FacebookEventsProps> = ({ limit = 3 }) => {
     });
   };
 
-  // Debug output to help identify issues
-  console.log('Events component state:', { loading, error, eventsCount: events.length });
-
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-3 gap-8">
         {[...Array(limit)].map((_, index) => (
           <div key={index} className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648] animate-pulse">
-            <div className="responsive-image-container responsive-image-container--4-3 bg-gray-200"></div>
+            <div className="w-full h-48 bg-gray-200"></div>
             <div className="p-6 space-y-3">
               <div className="h-6 bg-gray-200 rounded w-3/4"></div>
               <div className="h-4 bg-gray-200 rounded w-1/2"></div>
@@ -71,8 +69,7 @@ const FacebookEvents: React.FC<FacebookEventsProps> = ({ limit = 3 }) => {
     );
   }
 
-  if (!events || events.length === 0) {
-    console.log('No events to display');
+  if (events.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648]">
         <div className="p-6 text-center">
@@ -92,23 +89,33 @@ const FacebookEvents: React.FC<FacebookEventsProps> = ({ limit = 3 }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
       {events.map(event => (
-        <div key={event.id} className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648] h-full flex flex-col">
-          <div className="responsive-image-container responsive-image-container--4-3 border-b border-[#e6a648]/20">
-            {event.cover ? (
+        <div key={event.id} className="bg-white rounded-xl shadow-xl overflow-hidden border border-[#e6a648] hover:translate-y-[-5px] transition-transform duration-300">
+          {/* Cover image section - Use event cover or default if none available */}
+          <div className="w-full h-48 bg-[#f3df63]/10">
+            {event.cover?.source ? (
               <img
                 src={event.cover.source}
                 alt={event.name}
-                className="responsive-image responsive-image--mobile-contain md:responsive-image--cover"
+                className="w-full h-48 object-cover"
               />
             ) : (
-              <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-                <span className="text-gray-500">No image available</span>
+              <div className="relative w-full h-48 overflow-hidden">
+                <img
+                  src={defaultEventImage}
+                  alt="Event at Kings Head Cacklebury"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <div className="text-white text-center p-4">
+                    <span className="text-xl font-bold">Event at Kings Head</span>
+                  </div>
+                </div>
               </div>
             )}
           </div>
-          <div className="p-6 flex-grow flex flex-col">
+          <div className="p-6">
             <h3 className="text-xl font-semibold mb-2">{event.name}</h3>
             <p className="text-gray-600 mb-2">{formatDate(event.start_time)}</p>
             {event.description && (
@@ -118,7 +125,7 @@ const FacebookEvents: React.FC<FacebookEventsProps> = ({ limit = 3 }) => {
               href={`https://facebook.com/events/${event.id}`} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block text-[#e6a648] hover:text-[#f3df63] mt-auto"
+              className="inline-block text-[#e6a648] hover:text-[#f3df63]"
             >
               View event details
             </a>

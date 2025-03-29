@@ -376,7 +376,7 @@ function App() {
               <div className="relative z-10 mt-6">
                 <div id="contact" className="grid md:grid-cols-3 gap-6">
                   {/* Opening Hours */}
-                  <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden border border-white/20">
+                  <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden border border-white/20 hover:translate-y-[-5px] transition-transform duration-300">
                     <div className="responsive-image-container responsive-image-container--4-3 rounded-t-lg border-b border-white/20">
                       <img
                         src="/standard_opening_hours.png"
@@ -400,7 +400,7 @@ function App() {
                   </div>
 
                   {/* Location with Pub Image */}
-                  <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden border border-white/20">
+                  <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden border border-white/20 hover:translate-y-[-5px] transition-transform duration-300">
                     <div className="responsive-image-container responsive-image-container--4-3 rounded-t-lg border-b border-white/20">
                       <img
                         src="/kingshead_outside.png"
@@ -426,7 +426,7 @@ function App() {
                   </div>
 
                   {/* Contact */}
-                  <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden border border-white/20">
+                  <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden border border-white/20 hover:translate-y-[-5px] transition-transform duration-300">
                     <div className="responsive-image-container responsive-image-container--4-3 rounded-t-lg border-b border-white/20">
                       <img
                         src="/landlord.png"

@@ -10,13 +10,14 @@ const FacebookPosts: React.FC<FacebookPostsProps> = ({ limit = 3 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Default image to use when a post doesn't have its own image
+  const defaultPostImage = "/kingshead_cacklebury_logo.svg";
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        console.log('Fetching posts with limit:', limit);
         setLoading(true);
         const postsData = await facebookService.getPosts(limit);
-        console.log('Posts data received:', postsData);
         setPosts(postsData);
         setError(null);
       } catch (err) {
@@ -62,10 +63,10 @@ const FacebookPosts: React.FC<FacebookPostsProps> = ({ limit = 3 }) => {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="space-y-6">
         {[...Array(limit)].map((_, index) => (
           <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden border border-[#e6a648] animate-pulse">
-            <div className="responsive-image-container responsive-image-container--4-3 bg-gray-200"></div>
+            <div className="w-full h-64 bg-gray-200"></div>
             <div className="p-6 space-y-3">
               <div className="h-4 bg-gray-200 rounded w-full"></div>
               <div className="h-4 bg-gray-200 rounded w-full"></div>
@@ -109,23 +110,35 @@ const FacebookPosts: React.FC<FacebookPostsProps> = ({ limit = 3 }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
       {posts.map(post => (
-        <div key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-[#e6a648] h-full flex flex-col">
-          {post.full_picture && (
-            <div className="responsive-image-container responsive-image-container--4-3 border-b border-[#e6a648]/20">
+        <div 
+          key={post.id} 
+          className="bg-white rounded-lg shadow-md overflow-hidden border border-[#e6a648] hover:translate-y-[-5px] transition-transform duration-300"
+        >
+          {/* Image section - Use the post image or default if none available */}
+          <div className="w-full h-64 bg-[#f3df63]/10 flex items-center justify-center">
+            {post.full_picture ? (
               <img
                 src={post.full_picture}
-                alt="Facebook post image"
-                className="responsive-image responsive-image--mobile-contain md:responsive-image--cover"
+                alt="Post image"
+                className="w-full h-64 object-cover"
               />
-            </div>
-          )}
-          <div className="p-6 flex-grow">
-            {post.message && (
-              <p className="text-gray-700 mb-4">{post.message}</p>
+            ) : (
+              <div className="w-full h-64 flex items-center justify-center bg-[#f3df63]/10">
+                <img
+                  src={defaultPostImage}
+                  alt="Kings Head Cacklebury"
+                  className="w-32 h-32"
+                />
+              </div>
             )}
-            <div className="flex justify-between items-center mt-auto">
+          </div>
+          <div className="p-6">
+            {post.message && (
+              <p className="text-gray-700 mb-4 line-clamp-4">{post.message}</p>
+            )}
+            <div className="flex justify-between items-center">
               <span className="text-gray-500 text-sm">
                 {formatDate(post.created_time)}
               </span>
