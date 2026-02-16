@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { MapPin, Phone, Mail, Clock, Facebook, Menu, X } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Menu, X } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import FacebookPosts from "./components/facebookPosts";
@@ -10,10 +10,57 @@ import "swiper/css/pagination";
 // Define a type for the timer to fix the NodeJS namespace issue
 type TimeoutType = ReturnType<typeof setTimeout>;
 
+// Opening hours: [open hour (24h), close hour (24h)] for each day (0=Sun, 1=Mon, ..., 6=Sat)
+const OPENING_HOURS: Record<number, [number, number]> = {
+  0: [12, 22], // Sun: 12pm - 10pm
+  1: [16, 23], // Mon: 4pm - 11pm
+  2: [16, 23], // Tue: 4pm - 11pm
+  3: [16, 23], // Wed: 4pm - 11pm
+  4: [16, 23], // Thu: 4pm - 11pm
+  5: [14, 23], // Fri: 2pm - 11pm
+  6: [12, 23], // Sat: 12pm - 11pm
+};
+
+const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+function formatHour(hour: number): string {
+  if (hour === 0 || hour === 24) return "12am";
+  if (hour === 12) return "12pm";
+  return hour > 12 ? `${hour - 12}pm` : `${hour}am`;
+}
+
+function getPubStatus(): { isOpen: boolean; message: string } {
+  const now = new Date();
+  // Use en-US format so Date constructor can parse it (MM/DD/YYYY)
+  const ukTime = new Date(now.toLocaleString("en-US", { timeZone: "Europe/London" }));
+  const day = ukTime.getDay();
+  const hour = ukTime.getHours();
+  const minutes = ukTime.getMinutes();
+  const currentTime = hour + minutes / 60;
+
+  const [openHour, closeHour] = OPENING_HOURS[day];
+
+  if (currentTime >= openHour && currentTime < closeHour) {
+    return { isOpen: true, message: `Open until ${formatHour(closeHour)}` };
+  }
+
+  // Closed - find next opening time
+  if (currentTime < openHour) {
+    // Haven't opened yet today
+    return { isOpen: false, message: `Opens today at ${formatHour(openHour)}` };
+  }
+
+  // Past closing time - show tomorrow's opening
+  const tomorrow = (day + 1) % 7;
+  const [tomorrowOpen] = OPENING_HOURS[tomorrow];
+  return { isOpen: false, message: `Opens ${DAY_NAMES[tomorrow]} at ${formatHour(tomorrowOpen)}` };
+}
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [rotation, setRotation] = useState(0);
+  const [pubStatus, setPubStatus] = useState(getPubStatus);
   const lastScrollY = useRef(0);
   const scrollTimer = useRef<TimeoutType | null>(null);
   const isScrolling = useRef(false);
@@ -66,6 +113,11 @@ function App() {
         clearTimeout(scrollTimer.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => setPubStatus(getPubStatus()), 60000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleLogoClick = () => {
@@ -311,6 +363,19 @@ function App() {
                     </span>
                   </a>
                 </div>
+                <div className="px-6 py-4 border-t border-gray-200">
+                  <a
+                    href="https://www.instagram.com/kings_head_cacklebury/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
+                  >
+                    <Instagram className="w-4 h-4" />
+                    <span className="leading-none break-all">
+                      kings_head_cacklebury
+                    </span>
+                  </a>
+                </div>
               </div>
             )}
 
@@ -404,11 +469,9 @@ function App() {
       {/* Hero Section */}
       <div
         id="hero"
-        className="relative flex flex-col justify-center bg-cover bg-center h-[1900px] sm:h-[2256px] md:h-[700px] lg:h-[850px]"
+        className="relative bg-cover bg-center bg-[#f3df63]"
         style={{
           width: "100%",
-          minHeight: "760px",
-          overflow: "hidden",
         }}
       >
         {/* Video Background */}
@@ -430,27 +493,33 @@ function App() {
           </video>
         </div>
 
-        <div className="absolute inset-0 bg-black/40">
-          <div className="container mx-auto px-4 py-6">
-            <div className="pt-8">
-              <div className="mt-12 md:mt-16 max-w-4xl mx-auto text-center">
-                <h2 className="text-[#f3df63] text-3xl md:text-5xl font-bold mb-0">
-                  Your Local Community Pub Since 1850
-                </h2>
-                <p className="text-white text-xl md:text-2xl mb-2">
-                  Experience Sussex hospitality, Harvey's Ales & home-cooked
-                  food in our historic Hailsham pub
-                </p>
-                <a
-                  href="tel:01323440447"
-                  className="inline-flex items-center gap-2 bg-[#f3df63] text-black px-6 py-3 rounded-lg hover:bg-[#e6a648] hover:text-white transition-colors"
-                >
-                  <Phone className="w-5 h-5" />
-                  Get in touch with us: 01323 440447
-                </a>
+        <div className="relative z-10">
+          {/* Dark overlay for hero text area only */}
+          <div className="bg-black/40">
+            <div className="container mx-auto px-4 py-6">
+              <div className="pt-8">
+                <div className="mt-12 md:mt-16 max-w-4xl mx-auto text-center">
+                  <h2 className="text-[#f3df63] text-3xl md:text-5xl font-bold mb-0">
+                    Your Local Community Pub Since 1850
+                  </h2>
+                  <p className="text-white text-xl md:text-2xl mb-2">
+                    Experience Sussex hospitality, Harvey's Ales & home-cooked
+                    food in our historic Hailsham pub
+                  </p>
+                  <a
+                    href="tel:01323440447"
+                    className="inline-flex items-center gap-2 bg-[#f3df63] text-black px-6 py-3 rounded-lg hover:bg-[#e6a648] hover:text-white transition-colors"
+                  >
+                    <Phone className="w-5 h-5" />
+                    Get in touch with us: 01323 440447
+                  </a>
+                </div>
               </div>
+            </div>
+          </div>
 
-              <div className="relative z-10 mt-6">
+          {/* Cards area - no dark overlay, sits on yellow background */}
+          <div className="container mx-auto px-4 py-6">
                 <div id="contact" className="grid md:grid-cols-3 gap-6">
                   {/* Opening Hours */}
                   <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden border border-white/20 hover:translate-y-[-5px] transition-transform duration-300">
@@ -462,23 +531,46 @@ function App() {
                         style={{ backgroundColor: '#191b1d' }}
                       />
                     </div>
-                    <div className="p-6">
-                      <div className="flex items-center gap-2 mb-4">
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
                         <Clock className="text-[#e6a648]" />
                         <h2 className="text-black text-xl font-semibold">
                           Opening Hours
                         </h2>
                       </div>
-                      <div className="text-gray-700 space-y-2">
+                      <div className="text-gray-700 text-sm leading-tight space-y-0.5">
                         <p>Mon-Thurs: 4pm - 11pm</p>
                         <p>Fri: 2pm - 11pm</p>
                         <p>Sat: 12pm - 11pm</p>
                         <p>Sun: 12pm - 10pm</p>
                       </div>
+                      {/* Retro pub open/closed sign */}
+                      <div className={`mt-3 rounded-lg border-2 p-3 flex items-center gap-3 shadow-inner ${
+                        pubStatus.isOpen
+                          ? "bg-[#e6a648] border-[#c88a2e] text-white"
+                          : "bg-[#3a3a3a] border-[#222] text-[#f3df63]"
+                      }`}>
+                        <img
+                          src="/kingshead_cacklebury_logo.svg"
+                          alt=""
+                          className="w-10 h-10"
+                          style={{ opacity: pubStatus.isOpen ? 1 : 0.5 }}
+                        />
+                        <div>
+                          <div className="text-lg font-bold tracking-wide" style={{ fontFamily: "'Georgia', serif" }}>
+                            {pubStatus.isOpen ? "We're Open!" : "Sorry, We're Closed"}
+                          </div>
+                          <div className="text-xs opacity-90">
+                            {pubStatus.isOpen
+                              ? pubStatus.message
+                              : `But we open ${pubStatus.message.replace("Opens ", "").replace("Open ", "")}`}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Location with Pub Image */}
+                  {/* Location with Pub Image + Map */}
                   <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden border border-white/20 hover:translate-y-[-5px] transition-transform duration-300">
                     <div className="responsive-image-container responsive-image-container--4-3 rounded-t-lg border-b border-white/20">
                       <img
@@ -487,20 +579,46 @@ function App() {
                         className="responsive-image responsive-image--mobile-contain md:responsive-image--cover"
                       />
                     </div>
-                    <div className="p-6">
-                      <div className="flex items-center gap-2 mb-4">
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
                         <MapPin className="text-[#e6a648]" />
                         <h2 className="text-black text-xl font-semibold">
                           Find Us
                         </h2>
                       </div>
-                      <address className="text-gray-700 not-italic">
-                        146 South Road
-                        <br />
-                        Hailsham, East Sussex
-                        <br />
-                        BN27 3NJ
+                      <address className="text-gray-700 not-italic text-sm leading-tight">
+                        Kings Head Cacklebury,
+                        146 South Road, Hailsham,
+                        East Sussex, BN27 3NJ.
                       </address>
+                      {/* Mini map */}
+                      <a
+                        href="https://maps.app.goo.gl/VNFm6WBPrCrzyuaS9"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block relative mt-2 rounded-lg overflow-hidden border border-gray-200"
+                        style={{ height: "100px" }}
+                      >
+                        <iframe
+                          title="Kings Head Cacklebury Location"
+                          src="https://maps.google.com/maps?q=Kings+Head+Cacklebury+146+South+Road+Hailsham+BN27+3NJ&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                          className="w-full h-full border-0 pointer-events-none"
+                          loading="lazy"
+                        />
+                        <div className="absolute bottom-1 left-1 z-10 bg-[#e6a648] text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-md flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          Pop in for a pint!
+                        </div>
+                      </a>
+                      <a
+                        href="https://maps.app.goo.gl/VNFm6WBPrCrzyuaS9"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 mt-1 text-sm font-medium text-[#e6a648] hover:text-black transition-colors"
+                      >
+                        <MapPin className="w-4 h-4" />
+                        Get Directions
+                      </a>
                     </div>
                   </div>
 
@@ -513,48 +631,84 @@ function App() {
                         className="responsive-image responsive-image--mobile-contain md:responsive-image--cover"
                       />
                     </div>
-                    <div className="p-6">
-                      <div className="flex items-center gap-2 mb-4">
+                    <div className="p-4 relative overflow-hidden">
+                      <div className="flex items-center gap-2 mb-3">
                         <Phone className="text-[#e6a648]" />
                         <h2 className="text-black text-xl font-semibold">
                           Contact Us
                         </h2>
                       </div>
-                      <div className="text-gray-700 space-y-4">
-                        <a
-                          href="tel:01323440447"
-                          className="flex items-center gap-2 hover:text-[#e6a648]"
-                        >
-                          <Phone className="w-4 h-4" />
-                          01323 440447
-                        </a>
-                        <a
-                          href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..."
-                          className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
-                        >
-                          <Mail className="w-4 h-4" />
-                          lisa.kingshead@hotmail.com
-                        </a>
-                        <div className="flex gap-4 mt-4">
+                      <div className="flex items-center gap-3">
+                        <div className="text-gray-700 space-y-2 text-sm flex-1 min-w-0">
+                          <a
+                            href="tel:01323440447"
+                            className="flex items-center gap-2 hover:text-[#e6a648]"
+                          >
+                            <Phone className="w-4 h-4 flex-shrink-0" />
+                            01323 440447
+                          </a>
+                          <a
+                            href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..."
+                            className="flex items-center gap-2 hover:text-[#e6a648]"
+                          >
+                            <Mail className="w-4 h-4 flex-shrink-0" />
+                            lisa.kingshead@hotmail.com
+                          </a>
                           <a
                             href="https://www.facebook.com/KingsHeadCacklebury"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 hover:text-[#e6a648] break-words max-w-full"
+                            className="flex items-center gap-2 hover:text-[#e6a648]"
                             aria-label="Visit our Facebook page"
                           >
-                            <Facebook className="w-4 h-4" />
-                            <span className="leading-none break-all">
-                              facebook.com/KingsHeadCacklebury
-                            </span>
+                            <Facebook className="w-4 h-4 flex-shrink-0" />
+                            KingsHeadCacklebury
+                          </a>
+                          <a
+                            href="https://www.instagram.com/kings_head_cacklebury/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 hover:text-[#e6a648]"
+                            aria-label="Visit our Instagram page"
+                          >
+                            <Instagram className="w-4 h-4 flex-shrink-0" />
+                            kings_head_cacklebury
                           </a>
                         </div>
+                        {/* Icon badges - 2x2 grid beside links on mobile & large, hidden at md where cards are narrow */}
+                        <div className="grid grid-cols-2 gap-2 flex-shrink-0 md:hidden lg:grid">
+                          <a href="tel:01323440447" className="w-12 h-12 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                            <Phone className="w-6 h-6 text-white" />
+                          </a>
+                          <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..." className="w-12 h-12 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                            <Mail className="w-6 h-6 text-white" />
+                          </a>
+                          <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                            <Facebook className="w-6 h-6 text-white" />
+                          </a>
+                          <a href="https://www.instagram.com/kings_head_cacklebury/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                            <Instagram className="w-6 h-6 text-white" />
+                          </a>
+                        </div>
+                      </div>
+                      {/* Icon badges - horizontal row below links, only visible at md */}
+                      <div className="hidden md:flex lg:hidden justify-center gap-3 mt-3">
+                        <a href="tel:01323440447" className="w-10 h-10 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                          <Phone className="w-5 h-5 text-white" />
+                        </a>
+                        <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..." className="w-10 h-10 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                          <Mail className="w-5 h-5 text-white" />
+                        </a>
+                        <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                          <Facebook className="w-5 h-5 text-white" />
+                        </a>
+                        <a href="https://www.instagram.com/kings_head_cacklebury/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                          <Instagram className="w-5 h-5 text-white" />
+                        </a>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -983,7 +1137,7 @@ function App() {
 
           <FacebookPosts limit={3} />
 
-          <div className="text-center mt-8">
+          <div className="flex flex-wrap justify-center gap-4 mt-8">
             <a
               href="https://www.facebook.com/KingsHeadCacklebury"
               target="_blank"
@@ -992,6 +1146,15 @@ function App() {
             >
               <Facebook className="w-5 h-5" />
               Visit Our Facebook Page
+            </a>
+            <a
+              href="https://www.instagram.com/kings_head_cacklebury/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-6 py-3 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
+            >
+              <Instagram className="w-5 h-5" />
+              Visit Our Instagram Page
             </a>
           </div>
         </div>
@@ -1099,7 +1262,7 @@ function App() {
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
                   <address className="not-italic">
-                    146 South Road, Hailsham
+                    146 South Road, Hailsham, East Sussex, BN27 1AN.
                   </address>
                 </li>
               </ul>
@@ -1108,7 +1271,7 @@ function App() {
               <h3 className="text-white text-xl font-semibold mb-4">
                 Follow Us
               </h3>
-              <div className="flex gap-4">
+              <div className="flex flex-col gap-2">
                 <a
                   href="https://www.facebook.com/KingsHeadCacklebury"
                   target="_blank"
@@ -1119,6 +1282,18 @@ function App() {
                   <Facebook className="w-4 h-4" />
                   <span className="leading-none break-all">
                     facebook.com/KingsHeadCacklebury
+                  </span>
+                </a>
+                <a
+                  href="https://www.instagram.com/kings_head_cacklebury/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 hover:text-black break-words max-w-full"
+                  aria-label="Instagram Page"
+                >
+                  <Instagram className="w-4 h-4" />
+                  <span className="leading-none break-all">
+                    kings_head_cacklebury
                   </span>
                 </a>
               </div>
