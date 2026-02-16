@@ -469,9 +469,10 @@ function App() {
                         </h2>
                       </div>
                       <div className="text-gray-700 space-y-2">
-                        <p>Mon-Wed: 4pm - 11pm</p>
-                        <p>Thu-Fri: 2pm - 11pm</p>
-                        <p>Sat-Sun: 12pm - 11pm</p>
+                        <p>Mon-Thurs: 4pm - 11pm</p>
+                        <p>Fri: 2pm - 11pm</p>
+                        <p>Sat: 12pm - 11pm</p>
+                        <p>Sun: 12pm - 10:30pm</p>
                       </div>
                     </div>
                   </div>
