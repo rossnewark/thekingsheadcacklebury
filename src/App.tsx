@@ -458,7 +458,8 @@ function App() {
                       <img
                         src="/standard_opening_hours.png"
                         alt="Opening Hours Blackboard"
-                        className="responsive-image responsive-image--mobile-contain responsive-image--cover-top md:responsive-image--cover"
+                        className="responsive-image"
+                        style={{ backgroundColor: '#191b1d' }}
                       />
                     </div>
                     <div className="p-6">
@@ -472,7 +473,7 @@ function App() {
                         <p>Mon-Thurs: 4pm - 11pm</p>
                         <p>Fri: 2pm - 11pm</p>
                         <p>Sat: 12pm - 11pm</p>
-                        <p>Sun: 12pm - 10:30pm</p>
+                        <p>Sun: 12pm - 10pm</p>
                       </div>
                     </div>
                   </div>
