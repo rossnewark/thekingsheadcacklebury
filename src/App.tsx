@@ -61,6 +61,7 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [pubStatus, setPubStatus] = useState(getPubStatus);
+  const [hoveredContact, setHoveredContact] = useState<string | null>(null);
   const lastScrollY = useRef(0);
   const scrollTimer = useRef<TimeoutType | null>(null);
   const isScrolling = useRef(false);
@@ -642,14 +643,18 @@ function App() {
                         <div className="text-gray-700 space-y-2 text-sm flex-1 min-w-0">
                           <a
                             href="tel:01323440447"
-                            className="flex items-center gap-2 hover:text-[#e6a648]"
+                            className={`flex items-center gap-2 transition-colors ${hoveredContact === 'phone' ? 'text-[#e6a648]' : 'hover:text-[#e6a648]'}`}
+                            onMouseEnter={() => setHoveredContact('phone')}
+                            onMouseLeave={() => setHoveredContact(null)}
                           >
                             <Phone className="w-4 h-4 flex-shrink-0" />
                             01323 440447
                           </a>
                           <a
                             href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..."
-                            className="flex items-center gap-2 hover:text-[#e6a648]"
+                            className={`flex items-center gap-2 transition-colors ${hoveredContact === 'email' ? 'text-[#e6a648]' : 'hover:text-[#e6a648]'}`}
+                            onMouseEnter={() => setHoveredContact('email')}
+                            onMouseLeave={() => setHoveredContact(null)}
                           >
                             <Mail className="w-4 h-4 flex-shrink-0" />
                             lisa.kingshead@hotmail.com
@@ -658,8 +663,10 @@ function App() {
                             href="https://www.facebook.com/KingsHeadCacklebury"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 hover:text-[#e6a648]"
+                            className={`flex items-center gap-2 transition-colors ${hoveredContact === 'facebook' ? 'text-[#e6a648]' : 'hover:text-[#e6a648]'}`}
                             aria-label="Visit our Facebook page"
+                            onMouseEnter={() => setHoveredContact('facebook')}
+                            onMouseLeave={() => setHoveredContact(null)}
                           >
                             <Facebook className="w-4 h-4 flex-shrink-0" />
                             KingsHeadCacklebury
@@ -668,8 +675,10 @@ function App() {
                             href="https://www.instagram.com/kings_head_cacklebury/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 hover:text-[#e6a648]"
+                            className={`flex items-center gap-2 transition-colors ${hoveredContact === 'instagram' ? 'text-[#e6a648]' : 'hover:text-[#e6a648]'}`}
                             aria-label="Visit our Instagram page"
+                            onMouseEnter={() => setHoveredContact('instagram')}
+                            onMouseLeave={() => setHoveredContact(null)}
                           >
                             <Instagram className="w-4 h-4 flex-shrink-0" />
                             kings_head_cacklebury
@@ -677,32 +686,32 @@ function App() {
                         </div>
                         {/* Icon badges - 2x2 grid beside links on mobile & large, hidden at md where cards are narrow */}
                         <div className="grid grid-cols-2 gap-2 flex-shrink-0 md:hidden lg:grid">
-                          <a href="tel:01323440447" className="w-12 h-12 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                          <a href="tel:01323440447" className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm transition-colors ${hoveredContact === 'phone' ? 'bg-[#f3df63]' : 'bg-[#e6a648] hover:bg-[#f3df63]'}`} onMouseEnter={() => setHoveredContact('phone')} onMouseLeave={() => setHoveredContact(null)}>
                             <Phone className="w-6 h-6 text-white" />
                           </a>
-                          <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..." className="w-12 h-12 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                          <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..." className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm transition-colors ${hoveredContact === 'email' ? 'bg-[#f3df63]' : 'bg-[#e6a648] hover:bg-[#f3df63]'}`} onMouseEnter={() => setHoveredContact('email')} onMouseLeave={() => setHoveredContact(null)}>
                             <Mail className="w-6 h-6 text-white" />
                           </a>
-                          <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                          <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm transition-colors ${hoveredContact === 'facebook' ? 'bg-[#f3df63]' : 'bg-[#e6a648] hover:bg-[#f3df63]'}`} onMouseEnter={() => setHoveredContact('facebook')} onMouseLeave={() => setHoveredContact(null)}>
                             <Facebook className="w-6 h-6 text-white" />
                           </a>
-                          <a href="https://www.instagram.com/kings_head_cacklebury/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                          <a href="https://www.instagram.com/kings_head_cacklebury/" target="_blank" rel="noopener noreferrer" className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm transition-colors ${hoveredContact === 'instagram' ? 'bg-[#f3df63]' : 'bg-[#e6a648] hover:bg-[#f3df63]'}`} onMouseEnter={() => setHoveredContact('instagram')} onMouseLeave={() => setHoveredContact(null)}>
                             <Instagram className="w-6 h-6 text-white" />
                           </a>
                         </div>
                       </div>
                       {/* Icon badges - horizontal row below links, only visible at md */}
                       <div className="hidden md:flex lg:hidden justify-center gap-3 mt-3">
-                        <a href="tel:01323440447" className="w-10 h-10 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                        <a href="tel:01323440447" className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm transition-colors ${hoveredContact === 'phone' ? 'bg-[#f3df63]' : 'bg-[#e6a648] hover:bg-[#f3df63]'}`} onMouseEnter={() => setHoveredContact('phone')} onMouseLeave={() => setHoveredContact(null)}>
                           <Phone className="w-5 h-5 text-white" />
                         </a>
-                        <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..." className="w-10 h-10 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                        <a href="mailto:lisa.kingshead@hotmail.com?subject=Enquiry&body=Hello, I'd like to know more about..." className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm transition-colors ${hoveredContact === 'email' ? 'bg-[#f3df63]' : 'bg-[#e6a648] hover:bg-[#f3df63]'}`} onMouseEnter={() => setHoveredContact('email')} onMouseLeave={() => setHoveredContact(null)}>
                           <Mail className="w-5 h-5 text-white" />
                         </a>
-                        <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                        <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm transition-colors ${hoveredContact === 'facebook' ? 'bg-[#f3df63]' : 'bg-[#e6a648] hover:bg-[#f3df63]'}`} onMouseEnter={() => setHoveredContact('facebook')} onMouseLeave={() => setHoveredContact(null)}>
                           <Facebook className="w-5 h-5 text-white" />
                         </a>
-                        <a href="https://www.instagram.com/kings_head_cacklebury/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-[#e6a648] flex items-center justify-center shadow-sm hover:bg-[#f3df63] transition-colors">
+                        <a href="https://www.instagram.com/kings_head_cacklebury/" target="_blank" rel="noopener noreferrer" className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm transition-colors ${hoveredContact === 'instagram' ? 'bg-[#f3df63]' : 'bg-[#e6a648] hover:bg-[#f3df63]'}`} onMouseEnter={() => setHoveredContact('instagram')} onMouseLeave={() => setHoveredContact(null)}>
                           <Instagram className="w-5 h-5 text-white" />
                         </a>
                       </div>
