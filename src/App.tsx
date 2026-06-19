@@ -162,6 +162,13 @@ function App() {
 
   const poolImages = ["/pool_ball.png", "/pool_table.png", "/pool_balls.png"];
 
+  const quizImages = [
+    "/quiz_flyer.jpg",
+    "/quiz.jpg",
+    "/quiz_friends_laughing.jpg",
+    "/quiz_table_game.jpg",
+  ];
+
   const runImages = [
     "https://register.enthuse.com/assets/3559/59364/WhatsAppImage2025-08-27at17114.13",
     "https://register.enthuse.com/assets/3559/59364/WhatsAppImage2025-08-27at17219.13",
@@ -325,6 +332,13 @@ function App() {
                   Our History
                 </a>
                 <a
+                  href="#quiz"
+                  className="block px-6 py-2 hover:bg-[#f3df63]/10"
+                  role="menuitem"
+                >
+                  Quiz Night
+                </a>
+                <a
                   href="#community-run"
                   className="block px-6 py-2 hover:bg-[#f3df63]/10"
                   role="menuitem"
@@ -436,6 +450,14 @@ function App() {
                   </a>
                 </div>
               </div>
+              <a
+                href="#quiz"
+                className={`hover:text-[#ffffff] ${
+                  isScrolled ? "text-black" : ""
+                }`}
+              >
+                Quiz Night
+              </a>
               <a
                 href="#community-run"
                 className={`hover:text-[#ffffff] ${
@@ -1083,7 +1105,7 @@ function App() {
                 Beyond just drinks, we offer a variety of pub games including
                 pool, darts, shove ha'penny, toad-in-the-hole, dominoes,
                 cribbage, and board games to borrow. Our Sunday Quiz Night kicks
-                off at <strong>7:30pm</strong> – free entry, just for fun!
+                off at <strong>7pm</strong> – free entry, just for fun!
               </p>
               <div className="bg-white p-4 rounded-lg mt-4">
                 <h3 className="font-semibold text-xl mb-2">Facilities</h3>
@@ -1128,8 +1150,102 @@ function App() {
         </div>
       </section>
 
+      {/* Quiz Night Section */}
+      <section id="quiz" className="py-8 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Swiper Slider - Quiz */}
+            <div className="w-full overflow-hidden">
+              <Swiper
+                modules={[Autoplay, Pagination]}
+                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                loop={true}
+                className="rounded-lg shadow-xl w-full"
+              >
+                {quizImages.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="rounded-lg overflow-hidden">
+                      <div className="responsive-image-container responsive-image-container--4-3">
+                        <img
+                          src={image}
+                          alt={`Quiz Night Photo ${index + 1}`}
+                          className="responsive-image responsive-image--mobile-contain responsive-image--cover-bottom md:responsive-image--cover"
+                        />
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+
+            {/* Quiz Description */}
+            <div>
+              <h2 className="text-4xl font-bold text-center mb-4">
+                Sunday Quiz Night
+              </h2>
+              <p className="text-gray-700 text-lg mb-4">
+                Our Sunday Quiz Night is one of the best nights of the week at
+                the King's Head Cacklebury — and one of the most popular events
+                in Hailsham! Put your knowledge to the test, challenge your
+                friends, and see if your team can take the top spot.
+              </p>
+              <p className="text-gray-700 text-lg mb-4">
+                Whether you're a seasoned quiz master or just in it for the
+                laughs, everyone is welcome. The atmosphere is always brilliant
+                — expect plenty of banter, head-scratching, and the occasional
+                argument over an answer!
+              </p>
+              <p className="text-gray-700 text-lg mb-6">
+                We occasionally run <strong>charity quiz nights</strong> raising
+                money for good causes — keep an eye on our Facebook page for
+                upcoming themed and charity events.
+              </p>
+
+              <div className="bg-[#f3df63]/20 border-2 border-[#e6a648] rounded-lg p-6 mb-6">
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <p className="font-bold text-lg">When</p>
+                    <p className="text-gray-700">Sunday evenings from 7pm</p>
+                  </div>
+                  <div>
+                    <p className="font-bold text-lg">Teams</p>
+                    <p className="text-gray-700">Up to 4 people</p>
+                  </div>
+                  <div>
+                    <p className="font-bold text-lg">Entry</p>
+                    <p className="text-gray-700">Free — just for fun!</p>
+                  </div>
+                  <div>
+                    <p className="font-bold text-lg">Availability</p>
+                    <p className="text-gray-700">Call ahead to confirm</p>
+                  </div>
+                </div>
+                <a
+                  href="tel:01323440447"
+                  className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-5 py-2.5 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors text-sm"
+                >
+                  <Phone className="w-4 h-4" />
+                  Check availability: 01323 440447
+                </a>
+              </div>
+
+              <a
+                href="https://www.facebook.com/KingsHeadCacklebury"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-[#e6a648] hover:text-black transition-colors font-medium"
+              >
+                <Facebook className="w-5 h-5" />
+                Follow us on Facebook for quiz night updates
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Hailsham Community Run Section */}
-      <section id="community-run" className="py-8 bg-white">
+      <section id="community-run" className="py-8 bg-[#f3df63]/10">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Description */}
@@ -1262,6 +1378,11 @@ function App() {
                 <li>
                   <a href="#history" className="hover:text-black">
                     Our History
+                  </a>
+                </li>
+                <li>
+                  <a href="#quiz" className="hover:text-black">
+                    Quiz Night
                   </a>
                 </li>
                 <li>
