@@ -162,6 +162,13 @@ function App() {
 
   const poolImages = ["/pool_ball.png", "/pool_table.png", "/pool_balls.png"];
 
+  const runImages = [
+    "https://register.enthuse.com/assets/3559/59364/WhatsAppImage2025-08-27at17114.13",
+    "https://register.enthuse.com/assets/3559/59364/WhatsAppImage2025-08-27at17219.13",
+    "https://register.enthuse.com/assets/3559/59364/WhatsAppImage2025-08-27at17611.13",
+    "https://register.enthuse.com/assets/3559/59364/WhatsAppImage2025-08-27at17333.13",
+  ];
+
   const historyImages = [
     "/kingshead_cacklebury_line_drawing.png",
     "/kingshead_outside.png",
@@ -317,6 +324,13 @@ function App() {
                 >
                   Our History
                 </a>
+                <a
+                  href="#community-run"
+                  className="block px-6 py-2 hover:bg-[#f3df63]/10"
+                  role="menuitem"
+                >
+                  Run 2026
+                </a>
                 <div className="px-6 py-4 border-t border-gray-200">
                   <a
                     href="tel:01323440447"
@@ -422,6 +436,14 @@ function App() {
                   </a>
                 </div>
               </div>
+              <a
+                href="#community-run"
+                className={`hover:text-[#ffffff] ${
+                  isScrolled ? "text-black" : ""
+                }`}
+              >
+                Run 2026
+              </a>
               <a
                 href="#contact"
                 className={`hover:text-[#ffffff] ${
@@ -1106,6 +1128,83 @@ function App() {
         </div>
       </section>
 
+      {/* Hailsham Community Run Section */}
+      <section id="community-run" className="py-8 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Description */}
+            <div>
+              <h2 className="text-4xl font-bold text-center mb-4">
+                Hailsham Community Run 2026
+              </h2>
+              <p className="text-gray-700 text-lg mb-4">
+                The King's Head Cacklebury is proud to be a{" "}
+                <strong>sponsor of the Hailsham Community Run 2026</strong> — one of the town's
+                favourite community events, bringing together runners of all ages and abilities.
+              </p>
+              <p className="text-gray-700 text-lg mb-4">
+                Taking place on <strong>Sunday 12th July 2026</strong>, the event features races
+                for everyone — from a 1 Mile inclusive race and 3k for youngsters, to 5k and
+                10k challenges for more seasoned runners. The event sold out for the last two
+                years, so get your entry in quick!
+              </p>
+              <p className="text-gray-700 text-lg mb-6">
+                Whether you're running or cheering on the sidelines, come celebrate with us
+                afterwards at the pub.
+              </p>
+
+              {/* Medal offer callout */}
+              <div className="bg-[#f3df63]/20 border-2 border-[#e6a648] rounded-lg p-6 mb-6">
+                <p className="text-2xl font-bold mb-2">Bring your medal — free drink on us! 🏅🍻</p>
+                <p className="text-gray-700 mb-3">
+                  Completed the Hailsham Community Run? Come straight to the King's Head
+                  Cacklebury, show us your medal, and enjoy a <strong>free drink on us</strong>.
+                  You've earned it!
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>T&Cs:</strong> Choice of a pint of beer, medium glass of wine, single
+                  spirit and mixer, or pint of any draft soft drink. One drink per person.
+                </p>
+              </div>
+
+              <a
+                href="https://register.enthuse.com/ps/event/HailshamCommunityRun2026/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-6 py-3 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
+              >
+                Register for the Run
+              </a>
+            </div>
+
+            {/* Swiper Slider - Run images */}
+            <div className="w-full overflow-hidden">
+              <Swiper
+                modules={[Autoplay, Pagination]}
+                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                loop={true}
+                className="rounded-lg shadow-xl w-full"
+              >
+                {runImages.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="rounded-lg overflow-hidden">
+                      <div className="responsive-image-container responsive-image-container--4-3">
+                        <img
+                          src={image}
+                          alt={`Hailsham Community Run Photo ${index + 1}`}
+                          className="responsive-image responsive-image--mobile-contain responsive-image--cover-bottom md:responsive-image--cover"
+                        />
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-[#e6a648] text-white py-12 border-t-4 border-[#f3df63]">
         <div className="container mx-auto px-4">
@@ -1163,6 +1262,11 @@ function App() {
                 <li>
                   <a href="#history" className="hover:text-black">
                     Our History
+                  </a>
+                </li>
+                <li>
+                  <a href="#community-run" className="hover:text-black">
+                    Run 2026
                   </a>
                 </li>
                 <li>
