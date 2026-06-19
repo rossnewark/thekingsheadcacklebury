@@ -169,6 +169,10 @@ function App() {
     "/quiz_table_game.jpg",
   ];
 
+  const sportImages = ["/bar.jpg", "/kings_head_cacklebury_sign.png", "/live_music.jpg"];
+
+  const hireImages = ["/live_music_outside.jpg", "/customers_enjoying_a_roast.png", "/garden_view.png"];
+
   const runImages = [
     "https://register.enthuse.com/assets/3559/59364/WhatsAppImage2025-08-27at17114.13",
     "https://register.enthuse.com/assets/3559/59364/WhatsAppImage2025-08-27at17219.13",
@@ -332,11 +336,25 @@ function App() {
                   Our History
                 </a>
                 <a
+                  href="#sport"
+                  className="block px-6 py-2 hover:bg-[#f3df63]/10"
+                  role="menuitem"
+                >
+                  Live Sport
+                </a>
+                <a
                   href="#quiz"
                   className="block px-6 py-2 hover:bg-[#f3df63]/10"
                   role="menuitem"
                 >
                   Quiz Night
+                </a>
+                <a
+                  href="#hire"
+                  className="block px-6 py-2 hover:bg-[#f3df63]/10"
+                  role="menuitem"
+                >
+                  Book an Event
                 </a>
                 <a
                   href="#community-run"
@@ -448,6 +466,12 @@ function App() {
                   >
                     Our History
                   </a>
+                  <a
+                    href="#sport"
+                    className="block px-4 py-2 text-black hover:bg-[#f3df63]/10"
+                  >
+                    Live Sport
+                  </a>
                 </div>
               </div>
               <a
@@ -465,6 +489,14 @@ function App() {
                 }`}
               >
                 Run 2026
+              </a>
+              <a
+                href="#hire"
+                className={`hover:text-[#ffffff] ${
+                  isScrolled ? "text-black" : ""
+                }`}
+              >
+                Book
               </a>
               <a
                 href="#contact"
@@ -1244,6 +1276,174 @@ function App() {
         </div>
       </section>
 
+      {/* Live Sport Section */}
+      <section id="sport" className="py-8 bg-[#f3df63]/10">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl font-bold text-center mb-4">
+                Watch Live Sport on the Big Screen
+              </h2>
+              <p className="text-gray-700 text-lg mb-6">
+                The King's Head Cacklebury is the place to be for the big sporting occasions.
+                Pull up a pint, gather your mates, and watch the action unfold on our{" "}
+                <strong>big screen</strong> inside the pub — with a great atmosphere guaranteed.
+              </p>
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+                  <div className="text-3xl mb-2">🏉</div>
+                  <p className="font-semibold text-sm">Six Nations Rugby</p>
+                </div>
+                <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+                  <div className="text-3xl mb-2">⚽</div>
+                  <p className="font-semibold text-sm">World Cup Football</p>
+                </div>
+                <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+                  <div className="text-3xl mb-2">🏇</div>
+                  <p className="font-semibold text-sm">Grand National</p>
+                </div>
+              </div>
+              <p className="text-gray-700 text-lg mb-4">
+                We also have an <strong>outside bar</strong> — perfect for sunny matchdays in the garden.
+              </p>
+              <a
+                href="https://www.facebook.com/KingsHeadCacklebury"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-[#e6a648] hover:text-black transition-colors font-medium"
+              >
+                <Facebook className="w-5 h-5" />
+                Follow us on Facebook for what's showing
+              </a>
+            </div>
+            <div className="w-full overflow-hidden">
+              <Swiper
+                modules={[Autoplay, Pagination]}
+                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                loop={true}
+                className="rounded-lg shadow-xl w-full"
+              >
+                {sportImages.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="rounded-lg overflow-hidden">
+                      <div className="responsive-image-container responsive-image-container--4-3">
+                        <img
+                          src={image}
+                          alt={`Kings Head Cacklebury Photo ${index + 1}`}
+                          className="responsive-image responsive-image--mobile-contain responsive-image--cover-bottom md:responsive-image--cover"
+                        />
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Private Hire Section */}
+      <section id="hire" className="py-8 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="w-full overflow-hidden">
+              <Swiper
+                modules={[Autoplay, Pagination]}
+                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                loop={true}
+                className="rounded-lg shadow-xl w-full"
+              >
+                {hireImages.map((image, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="rounded-lg overflow-hidden">
+                      <div className="responsive-image-container responsive-image-container--4-3">
+                        <img
+                          src={image}
+                          alt={`Private hire at Kings Head Cacklebury ${index + 1}`}
+                          className="responsive-image responsive-image--mobile-contain responsive-image--cover-bottom md:responsive-image--cover"
+                        />
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+            <div>
+              <h2 className="text-4xl font-bold text-center mb-4">
+                Book the Pub for Your Event
+              </h2>
+              <p className="text-gray-700 text-lg mb-4">
+                Looking for the perfect venue for a special occasion? The King's Head
+                Cacklebury is available for <strong>private hire</strong> and we'd love
+                to help make your event one to remember.
+              </p>
+              <p className="text-gray-700 text-lg mb-6">
+                We've hosted birthday parties, baby showers, wakes, celebrations, and
+                more. With our spacious beer garden, outside bar, and cosy pub interior,
+                we can cater for a wide range of events whatever the occasion or weather.
+              </p>
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                {["Birthday Parties", "Baby Showers", "Celebrations", "Wakes & Memorials", "Team Events", "Private Gatherings"].map((event) => (
+                  <div key={event} className="flex items-center gap-2 text-gray-700">
+                    <span className="text-[#e6a648] font-bold">✓</span>
+                    {event}
+                  </div>
+                ))}
+              </div>
+              <div className="bg-[#f3df63]/20 border-2 border-[#e6a648] rounded-lg p-6">
+                <p className="font-semibold text-lg mb-3">Get in touch with Lisa to discuss your event:</p>
+                <div className="flex flex-col gap-3">
+                  <a
+                    href="tel:01323440447"
+                    className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-5 py-2.5 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
+                  >
+                    <Phone className="w-4 h-4" />
+                    Call Lisa: 01323 440447
+                  </a>
+                  <a
+                    href="mailto:lisa.kingshead@hotmail.com?subject=Private Hire Enquiry&body=Hello Lisa, I'd like to enquire about booking the pub for..."
+                    className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-5 py-2.5 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
+                  >
+                    <Mail className="w-4 h-4" />
+                    Email Lisa
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Google Reviews Section */}
+      <section className="py-10 bg-[#f3df63]/10">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-xl mx-auto">
+            <div className="text-4xl mb-3">⭐⭐⭐⭐⭐</div>
+            <h2 className="text-3xl font-bold mb-3">Enjoyed your visit?</h2>
+            <p className="text-gray-700 text-lg mb-6">
+              A Google review means the world to us — and helps other locals in Hailsham
+              discover their new favourite pub.
+            </p>
+            <a
+              href="https://search.google.com/local/writereview?placeid=ChIJw9WiHz1u30fOLl5ZFAiv5Q"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-white border-2 border-[#e6a648] text-black px-8 py-4 rounded-lg hover:bg-[#e6a648] hover:text-white transition-colors text-lg font-semibold shadow-md"
+            >
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Leave us a Google Review
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Hailsham Community Run Section */}
       <section id="community-run" className="py-8 bg-[#f3df63]/10">
         <div className="container mx-auto px-4">
@@ -1383,6 +1583,16 @@ function App() {
                 <li>
                   <a href="#quiz" className="hover:text-black">
                     Quiz Night
+                  </a>
+                </li>
+                <li>
+                  <a href="#sport" className="hover:text-black">
+                    Live Sport
+                  </a>
+                </li>
+                <li>
+                  <a href="#hire" className="hover:text-black">
+                    Book an Event
                   </a>
                 </li>
                 <li>

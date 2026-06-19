@@ -2,40 +2,223 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    
+
     <!-- Favicon setup -->
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/kingshead_cacklebury_logo.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="manifest" href="/manifest.json">
-    
+    <link rel="manifest" href="/manifest.webmanifest">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Theme color for browsers that support it -->
+
+    <!-- Theme -->
     <meta name="theme-color" content="#e6a648">
-    <meta name="color-scheme" content="light dark">
-    <!-- Specific meta for Firefox/Opera support -->
-    <meta name="color-scheme" content="normal">
     <meta name="msapplication-TileColor" content="#e6a648">
-    
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Kings Head Cacklebury - Traditional Pub in Hailsham, East Sussex</title>
-    <meta name="description" content="Welcome to Kings Head Cacklebury, a historic pub in Hailsham, East Sussex. Enjoy local Harveys ales, delicious Sunday roasts, live music, and a cozy atmosphere. Perfect for family gatherings and community events." />
-    <meta name="keywords" content="Kings Head Cacklebury, Cacklebury pub, Hailsham pub, East Sussex pub, traditional English pub, local ales, pub food, live music, beer garden, family-friendly pub, community events, historic pub, cozy atmosphere, real ale, Sunday roast, pub quiz, darts" />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
+
+    <!-- Primary meta -->
+    <title>Kings Head Cacklebury — Harvey's Pub in Hailsham, East Sussex</title>
+    <meta name="description" content="Harvey's pub in Hailsham, East Sussex since 1850. Real ales, Sunday roasts (call for availability), free quiz night every Sunday from 7pm, beer garden, live music, dog & family friendly. Call 01323 440447." />
+    <meta name="keywords" content="Kings Head Cacklebury, Hailsham pub, East Sussex pub, Harvey's ales, Sunday roast Hailsham, pub quiz Hailsham, beer garden Hailsham, dog friendly pub Hailsham, live music Hailsham, darts Hailsham, pool team Hailsham, traditional pub, real ale, Cacklebury" />
+    <meta name="author" content="Kings Head Cacklebury" />
+    <link rel="canonical" href="https://kingsheadcacklebury.co.uk/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="restaurant" />
     <meta property="og:url" content="https://kingsheadcacklebury.co.uk/" />
-    <meta property="og:title" content="Kings Head Cacklebury - Traditional Pub in Hailsham" />
-    <meta property="og:description" content="Historic pub serving Harvey's ales and legendary Sunday roasts in Hailsham, East Sussex." />
-    <meta property="og:image" content="/kingshead_cacklebury_pub_outside.jpg" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://kingsheadcacklebury.co.uk/" />
-    <meta property="twitter:title" content="Kings Head Cacklebury - Traditional Pub in Hailsham" />
-    <meta property="twitter:description" content="Historic pub serving Harvey's ales and legendary Sunday roasts in Hailsham, East Sussex." />
-    <meta property="twitter:image" content="/kingshead_cacklebury_pub_outside.jpg" />
+    <meta property="og:site_name" content="Kings Head Cacklebury" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content="Kings Head Cacklebury — Harvey's Pub in Hailsham, East Sussex" />
+    <meta property="og:description" content="Traditional Harvey's pub in Hailsham since 1850. Real ales, Sunday roasts, weekly quiz night, beer garden & live music." />
+    <meta property="og:image" content="https://kingsheadcacklebury.co.uk/kingshead_outside.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kings Head Cacklebury pub exterior, Hailsham" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kings Head Cacklebury — Harvey's Pub in Hailsham" />
+    <meta name="twitter:description" content="Traditional Harvey's pub in Hailsham since 1850. Real ales, Sunday roasts, weekly quiz night, beer garden & live music." />
+    <meta name="twitter:image" content="https://kingsheadcacklebury.co.uk/kingshead_outside.png" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BarOrPub",
+          "@id": "https://kingsheadcacklebury.co.uk/#pub",
+          "name": "Kings Head Cacklebury",
+          "alternateName": "The King's Head Cacklebury",
+          "description": "Traditional Harvey's Community Grade 2 Listed pub in Hailsham, East Sussex, serving real ales, Sunday roasts, hosting weekly quiz nights, live music, and community events since 1850.",
+          "url": "https://kingsheadcacklebury.co.uk/",
+          "telephone": "+441323440447",
+          "email": "lisa.kingshead@hotmail.com",
+          "foundingDate": "1850",
+          "priceRange": "££",
+          "servesCuisine": ["British", "Pub Food"],
+          "currenciesAccepted": "GBP",
+          "logo": "https://kingsheadcacklebury.co.uk/kingshead_cacklebury_logo.svg",
+          "image": [
+            "https://kingsheadcacklebury.co.uk/kingshead_outside.png",
+            "https://kingsheadcacklebury.co.uk/harveys_pumps.png",
+            "https://kingsheadcacklebury.co.uk/garden_view.png"
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "146 South Road",
+            "addressLocality": "Hailsham",
+            "addressRegion": "East Sussex",
+            "postalCode": "BN27 3NJ",
+            "addressCountry": "GB"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "50.8570922",
+            "longitude": "0.2498848"
+          },
+          "hasMap": "https://maps.app.goo.gl/VNFm6WBPrCrzyuaS9",
+          "sameAs": [
+            "https://www.facebook.com/KingsHeadCacklebury",
+            "https://www.instagram.com/kings_head_cacklebury/"
+          ],
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"],
+              "opens": "16:00",
+              "closes": "23:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": "Friday",
+              "opens": "14:00",
+              "closes": "23:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": "Saturday",
+              "opens": "12:00",
+              "closes": "23:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": "Sunday",
+              "opens": "12:00",
+              "closes": "22:00"
+            }
+          ],
+          "amenityFeature": [
+            {"@type": "LocationFeatureSpecification", "name": "Beer Garden", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Car Park", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Disabled Access", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Dog Friendly", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Family Friendly", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Live Music", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Smoking Area", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Pool Table", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Darts", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Open Fireplace", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Cask Marque Accredited", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Outside Bar", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Big Screen TV", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Private Hire Available", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Live Sport Shown", "value": true}
+          ],
+          "hasMenu": {
+            "@type": "Menu",
+            "name": "Sunday Roast Menu",
+            "description": "Traditional Sunday roasts served 12pm–4pm. Call ahead to check availability on 01323 440447.",
+            "hasMenuSection": {
+              "@type": "MenuSection",
+              "name": "Sunday Roasts",
+              "hasMenuItem": [
+                {"@type": "MenuItem", "name": "Roast Beef", "description": "Succulent roast beef with crispy roast potatoes, Yorkshire pudding, seasonal vegetables and gravy"},
+                {"@type": "MenuItem", "name": "Roast Pork", "description": "Tender pork with crispy roast potatoes, Yorkshire pudding, seasonal vegetables and gravy"},
+                {"@type": "MenuItem", "name": "Roast Chicken", "description": "Mouthwatering chicken with crispy roast potatoes, Yorkshire pudding, seasonal vegetables and gravy"},
+                {"@type": "MenuItem", "name": "Vegetarian Roast", "description": "Delicious vegetarian option with crispy roast potatoes, Yorkshire pudding, seasonal vegetables and gravy"}
+              ]
+            }
+          },
+          "event": [
+            {
+              "@type": "Event",
+              "name": "Sunday Quiz Night",
+              "description": "Free pub quiz every Sunday evening from 7pm at the Kings Head Cacklebury. Teams of up to 4 people. Free entry, just for fun! Occasional charity quiz nights — check Facebook for updates.",
+              "isAccessibleForFree": true,
+              "eventSchedule": {
+                "@type": "Schedule",
+                "byDay": "https://schema.org/Sunday",
+                "startTime": "19:00",
+                "repeatFrequency": "P1W"
+              },
+              "location": {
+                "@type": "Place",
+                "name": "Kings Head Cacklebury",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "146 South Road",
+                  "addressLocality": "Hailsham",
+                  "addressRegion": "East Sussex",
+                  "postalCode": "BN27 3NJ",
+                  "addressCountry": "GB"
+                }
+              }
+            },
+            {
+              "@type": "Event",
+              "name": "Monday Darts Night",
+              "description": "Darts team practice and league matches every Monday evening at the Kings Head Cacklebury. New members welcome.",
+              "eventSchedule": {
+                "@type": "Schedule",
+                "byDay": "https://schema.org/Monday",
+                "repeatFrequency": "P1W"
+              },
+              "location": {"@id": "https://kingsheadcacklebury.co.uk/#pub"}
+            },
+            {
+              "@type": "Event",
+              "name": "Thursday Pool League",
+              "description": "Pool league match nights every Thursday evening at the Kings Head Cacklebury.",
+              "eventSchedule": {
+                "@type": "Schedule",
+                "byDay": "https://schema.org/Thursday",
+                "repeatFrequency": "P1W"
+              },
+              "location": {"@id": "https://kingsheadcacklebury.co.uk/#pub"}
+            },
+            {
+              "@type": "SportsEvent",
+              "name": "Hailsham Community Run 2026",
+              "description": "The Kings Head Cacklebury is a proud sponsor of the Hailsham Community Run 2026 featuring 1 Mile, 3k, 5k and 10k races. Finishers can bring their medal to the pub for a free drink.",
+              "startDate": "2026-07-12T09:30:00+01:00",
+              "url": "https://register.enthuse.com/ps/event/HailshamCommunityRun2026/",
+              "sponsor": {"@id": "https://kingsheadcacklebury.co.uk/#pub"},
+              "location": {
+                "@type": "Place",
+                "name": "Hailsham Town Centre",
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressLocality": "Hailsham",
+                  "addressRegion": "East Sussex",
+                  "addressCountry": "GB"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://kingsheadcacklebury.co.uk/#website",
+          "url": "https://kingsheadcacklebury.co.uk/",
+          "name": "Kings Head Cacklebury",
+          "description": "Official website of the Kings Head Cacklebury pub in Hailsham, East Sussex",
+          "publisher": {"@id": "https://kingsheadcacklebury.co.uk/#pub"}
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
