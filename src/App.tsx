@@ -57,6 +57,7 @@ function getPubStatus(): { isOpen: boolean; message: string } {
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [pubStatus, setPubStatus] = useState(getPubStatus);
   const [hoveredContact, setHoveredContact] = useState<string | null>(null);
@@ -71,6 +72,7 @@ function App() {
 
       // Determine if we're scrolled past threshold
       setIsScrolled(currentScrollY > 50);
+      setShowBackToTop(currentScrollY > 600);
 
       // Only update rotation if we've scrolled at least 5px
       if (Math.abs(currentScrollY - lastScrollY.current) >= 5) {
@@ -169,9 +171,7 @@ function App() {
     "/quiz_table_game.jpg",
   ];
 
-  const sportImages = ["/bar.jpg", "/kings_head_cacklebury_sign.png", "/live_music.jpg"];
-
-  const hireImages = ["/live_music_outside.jpg", "/customers_enjoying_a_roast.png", "/garden_view.png"];
+const hireImages = ["/live_music_outside.jpg", "/customers_enjoying_a_roast.png", "/garden_view.png"];
 
   const runImages = [
     "https://register.enthuse.com/assets/3559/59364/WhatsAppImage2025-08-27at17114.13",
@@ -361,7 +361,7 @@ function App() {
                   className="block px-6 py-2 hover:bg-[#f3df63]/10"
                   role="menuitem"
                 >
-                  Run 2026
+                  Community Run
                 </a>
                 <div className="px-6 py-4 border-t border-gray-200">
                   <a
@@ -488,7 +488,7 @@ function App() {
                   isScrolled ? "text-black" : ""
                 }`}
               >
-                Run 2026
+                Community Run
               </a>
               <a
                 href="#hire"
@@ -965,8 +965,10 @@ function App() {
                 Our garden features a dedicated{" "}
                 <strong>stage for live bands</strong>. We host live music events
                 both in the garden and inside the pub — check our{" "}
-                <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className="text-[#e6a648] hover:underline">Facebook page</a>{" "}
-                for the latest updates on upcoming bands and gigs.
+                <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className="text-[#e6a648] hover:underline">Facebook</a>{" "}
+                and{" "}
+                <a href="https://www.instagram.com/kings_head_cacklebury/" target="_blank" rel="noopener noreferrer" className="text-[#e6a648] hover:underline">Instagram</a>{" "}
+                pages for the latest updates on upcoming bands and gigs.
               </p>
               <p className="text-gray-700 text-lg mb-6">
                 We have a <strong>smoking area outside</strong> for those who
@@ -1075,7 +1077,7 @@ function App() {
             {/* Pool Team Description */}
             <div>
               <h2 className="text-4xl font-bold text-center mb-4">
-                Meet Our Pool Sharks
+                Meet Our Pool Team
               </h2>
               <p className="text-gray-700 text-lg mb-6">
                 The King's Head Pool Team brings together a talented group of
@@ -1132,6 +1134,8 @@ function App() {
                 As a dog-friendly establishment, your four-legged companions are
                 always welcome, and well-behaved pups might even receive a treat
                 from our staff. Families with children are welcome until 9pm.
+                Please note that children and pets remain the responsibility of
+                their owners at all times.
               </p>
               <p className="text-gray-700 text-lg mb-6">
                 Beyond just drinks, we offer a variety of pub games including
@@ -1141,15 +1145,19 @@ function App() {
               </p>
               <div className="bg-white p-4 rounded-lg mt-4">
                 <h3 className="font-semibold text-xl mb-2">Facilities</h3>
-                <ul className="list-disc pl-6 space-y-1 text-gray-700">
-                  <li>Beautiful Beer Garden</li>
-                  <li>Cask Marque Accredited</li>
-                  <li>Ample Off Road Parking</li>
-                  <li>Disabled Access</li>
-                  <li>Family & Dog Friendly</li>
-                  <li>Open Fireplace</li>
-                  <li>Tradional Pub Games</li>
-                  <li>Live Music</li>
+                <ul className="space-y-2 text-gray-700">
+                  <li>🌳 Beautiful Beer Garden &amp; Outside Bar</li>
+                  <li>🏅 Cask Marque Accredited</li>
+                  <li>🚗 Ample Off Road Parking</li>
+                  <li>♿ Disabled Access — Grade 2 listed building with low doorway thresholds and low beams. The beer garden has one step down; the rest of the pub is on the same level.</li>
+                  <li>🐶 Family &amp; Dog Friendly</li>
+                  <li>🔥 Two cosy open log fireplaces with locally sourced wood</li>
+                  <li>🎯 Two Dartboards &amp; a Pool Table</li>
+                  <li>🎱 Traditional Pub Games</li>
+                  <li>🚚 Food Trailer on Site</li>
+                  <li>🍽️ Home Cooked Meals Midweek &amp; Sundays</li>
+                  <li>🎤 Live Music, Parties &amp; Karaoke</li>
+                  <li>😊 Friendly, Experienced Local Staff</li>
                 </ul>
               </div>
             </div>
@@ -1230,8 +1238,8 @@ function App() {
               </p>
               <p className="text-gray-700 text-lg mb-6">
                 We occasionally run <strong>charity quiz nights</strong> raising
-                money for good causes — keep an eye on our Facebook page for
-                upcoming themed and charity events.
+                money for good causes — follow us on social media for upcoming
+                themed and charity events.
               </p>
 
               <div className="bg-[#f3df63]/20 border-2 border-[#e6a648] rounded-lg p-6 mb-6">
@@ -1262,15 +1270,27 @@ function App() {
                 </a>
               </div>
 
-              <a
-                href="https://www.facebook.com/KingsHeadCacklebury"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[#e6a648] hover:text-black transition-colors font-medium"
-              >
-                <Facebook className="w-5 h-5" />
-                Follow us on Facebook for quiz night updates
-              </a>
+              <div className="flex items-center gap-4 justify-center md:justify-start">
+                <span className="text-gray-700 font-medium">Follow us for the latest quiz updates:</span>
+                <a
+                  href="https://www.facebook.com/KingsHeadCacklebury"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="text-[#e6a648] hover:text-black transition-colors"
+                >
+                  <Facebook className="w-6 h-6" />
+                </a>
+                <a
+                  href="https://www.instagram.com/kings_head_cacklebury/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="text-[#e6a648] hover:text-black transition-colors"
+                >
+                  <Instagram className="w-6 h-6" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -1278,69 +1298,54 @@ function App() {
 
       {/* Live Sport Section */}
       <section id="sport" className="py-8 bg-[#f3df63]/10">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-center mb-4">
-                Live Sport on the Big Screen
-              </h2>
-              <p className="text-gray-700 text-lg mb-6">
-                We show select sporting occasions on our{" "}
-                <strong>big screen above the fireplace</strong> — the perfect spot
-                to settle in with a pint and enjoy the atmosphere with good company.
-              </p>
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-                  <div className="text-3xl mb-2">🏉</div>
-                  <p className="font-semibold text-sm">Six Nations Rugby</p>
-                </div>
-                <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-                  <div className="text-3xl mb-2">⚽</div>
-                  <p className="font-semibold text-sm">World Cup Football</p>
-                </div>
-                <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-                  <div className="text-3xl mb-2">🏇</div>
-                  <p className="font-semibold text-sm">Grand National</p>
-                </div>
-              </div>
-              <p className="text-gray-700 text-lg mb-4">
-                On warmer days, take the party outside — our{" "}
-                <strong>outside bar</strong> keeps the garden well stocked for
-                sunny matchdays.
-              </p>
-              <a
-                href="https://www.facebook.com/KingsHeadCacklebury"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[#e6a648] hover:text-black transition-colors font-medium"
-              >
-                <Facebook className="w-5 h-5" />
-                Follow us on Facebook for what's showing
-              </a>
+        <div className="container mx-auto px-4 max-w-2xl text-center">
+          <h2 className="text-4xl font-bold mb-4">
+            Live Sport on the Big Screen
+          </h2>
+          <p className="text-gray-700 text-lg mb-6">
+            We show select sporting occasions on our{" "}
+            <strong>big screen above the fireplace</strong> — the perfect spot
+            to settle in with a pint and enjoy the atmosphere with good company.
+          </p>
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+              <div className="text-3xl mb-2">🏉</div>
+              <p className="font-semibold text-sm">Six Nations Rugby</p>
             </div>
-            <div className="w-full overflow-hidden">
-              <Swiper
-                modules={[Autoplay, Pagination]}
-                autoplay={{ delay: 4000, disableOnInteraction: false }}
-                pagination={{ clickable: true }}
-                loop={true}
-                className="rounded-lg shadow-xl w-full"
-              >
-                {sportImages.map((image, index) => (
-                  <SwiperSlide key={index}>
-                    <div className="rounded-lg overflow-hidden">
-                      <div className="responsive-image-container responsive-image-container--4-3">
-                        <img
-                          src={image}
-                          alt={`Kings Head Cacklebury Photo ${index + 1}`}
-                          className="responsive-image responsive-image--mobile-contain responsive-image--cover-bottom md:responsive-image--cover"
-                        />
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+            <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+              <div className="text-3xl mb-2">⚽</div>
+              <p className="font-semibold text-sm">World Cup Football</p>
             </div>
+            <div className="bg-white rounded-lg p-4 text-center shadow-sm">
+              <div className="text-3xl mb-2">🏇</div>
+              <p className="font-semibold text-sm">Grand National</p>
+            </div>
+          </div>
+          <p className="text-gray-700 text-lg mb-6">
+            On warmer days, take the party outside — our{" "}
+            <strong>outside bar</strong> keeps the garden well stocked for
+            sunny matchdays.
+          </p>
+          <div className="flex justify-center items-center gap-4">
+            <span className="text-gray-700 font-medium">Follow us for upcoming fixtures:</span>
+            <a
+              href="https://www.facebook.com/KingsHeadCacklebury"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="text-[#e6a648] hover:text-black transition-colors"
+            >
+              <Facebook className="w-6 h-6" />
+            </a>
+            <a
+              href="https://www.instagram.com/kings_head_cacklebury/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="text-[#e6a648] hover:text-black transition-colors"
+            >
+              <Instagram className="w-6 h-6" />
+            </a>
           </div>
         </div>
       </section>
@@ -1382,12 +1387,13 @@ function App() {
                 to help make your event one to remember.
               </p>
               <p className="text-gray-700 text-lg mb-6">
-                We've hosted birthday parties, baby showers, wakes, celebrations, and
-                more. With our spacious beer garden, outside bar, and cosy pub interior,
-                we can cater for a wide range of events whatever the occasion or weather.
+                We've hosted birthday parties, baby showers, wakes, celebrations,
+                community group meetings, and more. With our spacious beer garden,
+                outside bar, and cosy pub interior, we can cater for a wide range of
+                events whatever the occasion or weather.
               </p>
               <div className="grid grid-cols-2 gap-3 mb-6">
-                {["Birthday Parties", "Baby Showers", "Celebrations", "Wakes & Memorials", "Team Events", "Private Gatherings"].map((event) => (
+                {["Birthday Parties", "Baby Showers", "Celebrations", "Wakes & Memorials", "Community Group Meetings", "Team Events", "Karaoke Nights", "Private Gatherings"].map((event) => (
                   <div key={event} className="flex items-center gap-2 text-gray-700">
                     <span className="text-[#e6a648] font-bold">✓</span>
                     {event}
@@ -1409,7 +1415,7 @@ function App() {
                     className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-5 py-2.5 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
                   >
                     <Mail className="w-4 h-4" />
-                    Email Lisa
+                    Email Lisa: lisa.kingshead@hotmail.com
                   </a>
                 </div>
               </div>
@@ -1425,11 +1431,11 @@ function App() {
             {/* Description */}
             <div>
               <h2 className="text-4xl font-bold text-center mb-4">
-                Hailsham Community Run 2026
+                Hailsham Community Run
               </h2>
               <p className="text-gray-700 text-lg mb-4">
                 The King's Head Cacklebury is proud to be a{" "}
-                <strong>sponsor of the Hailsham Community Run 2026</strong> — one of the town's
+                <strong>sponsor of the Hailsham Community Run</strong> — one of the town's
                 favourite community events, bringing together runners of all ages and abilities.
               </p>
               <p className="text-gray-700 text-lg mb-4">
@@ -1599,7 +1605,7 @@ function App() {
                 </li>
                 <li>
                   <a href="#community-run" className="hover:text-black">
-                    Run 2026
+                    Community Run
                   </a>
                 </li>
                 <li>
@@ -1691,6 +1697,19 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Back to top button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Back to top"
+        className={`fixed bottom-6 right-6 z-50 bg-[#e6a648] text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-[#f3df63] hover:text-black transition-all duration-300 ${
+          showBackToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M18 15l-6-6-6 6"/>
+        </svg>
+      </button>
     </div>
   );
 }
