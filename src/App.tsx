@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Menu, X } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
-import FacebookPosts from "./components/facebookPosts";
-import FacebookEvents from "./components/facebookEvents";
 import "swiper/css";
 import "swiper/css/pagination";
 
@@ -319,20 +317,6 @@ function App() {
                 >
                   Our History
                 </a>
-                <a
-                  href="#events"
-                  className="block px-6 py-2 hover:bg-[#f3df63]/10"
-                  role="menuitem"
-                >
-                  Events
-                </a>
-                <a
-                  href="#facebook-feed"
-                  className="block px-6 py-2 hover:bg-[#f3df63]/10"
-                  role="menuitem"
-                >
-                  Facebook Feed
-                </a>
                 <div className="px-6 py-4 border-t border-gray-200">
                   <a
                     href="tel:01323440447"
@@ -438,22 +422,6 @@ function App() {
                   </a>
                 </div>
               </div>
-              <a
-                href="#events"
-                className={`hover:text-[#ffffff] ${
-                  isScrolled ? "text-black" : ""
-                }`}
-              >
-                Events
-              </a>
-              <a
-                href="#facebook-feed"
-                className={`hover:text-[#ffffff] ${
-                  isScrolled ? "text-black" : ""
-                }`}
-              >
-                Facebook
-              </a>
               <a
                 href="#contact"
                 className={`hover:text-[#ffffff] ${
@@ -626,11 +594,28 @@ function App() {
                   {/* Contact */}
                   <div className="bg-white/95 rounded-lg shadow-xl backdrop-blur-sm overflow-hidden border border-white/20 hover:translate-y-[-5px] transition-transform duration-300">
                     <div className="responsive-image-container responsive-image-container--4-3 rounded-t-lg border-b border-white/20">
-                      <img
-                        src="/landlord.png"
-                        alt="Contact Us"
-                        className="responsive-image responsive-image--mobile-contain md:responsive-image--cover"
-                      />
+                      {[
+                        { key: null, src: "/landlord.png", alt: "Pete Loft - Landlord", pos: "center 20%" },
+                        { key: "phone", src: "/landlord_phone.png", alt: "Give us a call", pos: "center 15%" },
+                        { key: "email", src: "/landlord_email.png", alt: "Send us an email", pos: "center 20%" },
+                        { key: "facebook", src: "/landlord_facebook.png", alt: "Find us on Facebook", pos: "center 10%" },
+                        { key: "instagram", src: "/landlord_instagram.png", alt: "Follow us on Instagram", pos: "center 15%" },
+                      ].map((img) => (
+                        <img
+                          key={img.src}
+                          src={img.src}
+                          alt={img.alt}
+                          className="responsive-image"
+                          style={{
+                            objectFit: "cover",
+                            objectPosition: img.pos,
+                            opacity: img.key === null
+                              ? (hoveredContact === null ? 1 : 0)
+                              : (hoveredContact === img.key ? 1 : 0),
+                            transition: "opacity 0.4s ease",
+                          }}
+                        />
+                      ))}
                     </div>
                     <div className="p-4 relative overflow-hidden">
                       <div className="flex items-center gap-2 mb-3">
@@ -757,7 +742,7 @@ function App() {
             {/* Roast Details */}
             <div className="flex flex-col justify-start">
               <h3 className="text-2xl font-semibold mb-4">
-                Join Us Every Sunday
+                Our Legendary Sunday Roasts
               </h3>
               <p className="text-lg text-gray-700 mb-6">
                 Our legendary Sunday roasts are the talk of Hailsham, and for
@@ -788,22 +773,20 @@ function App() {
               </p>
 
               <p className="text-lg text-gray-700 mb-8">
-                <strong>Join us this Sunday and taste the difference!</strong>
+                <strong>Call us to find out when roasts are available and to book your table!</strong>
               </p>
 
               {/* Sunday Roast Times Section */}
               <div className="bg-[#f3df63]/10 p-6 rounded-lg py-8">
-                <p className="text-xl font-semibold mb-2">Sunday Roast Times</p>
-                <p className="text-gray-700">Served 12pm - 4pm every Sunday</p>
-                <p className="text-gray-700 mt-2">
-                  <a
-                    href="tel:01323440447"
-                    className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-6 py-3 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
-                  >
-                    <Phone className="w-5 h-5" />
-                    Book Your Table Now: 01323 440447
-                  </a>
-                </p>
+                <p className="text-xl font-semibold mb-2">Sunday Roast</p>
+                <p className="text-gray-700 mb-4">Served 12pm - 4pm on Sundays — call ahead to check availability.</p>
+                <a
+                  href="tel:01323440447"
+                  className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-6 py-3 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
+                >
+                  <Phone className="w-5 h-5" />
+                  Call to Check Availability: 01323 440447
+                </a>
               </div>
             </div>
           </div>
@@ -830,7 +813,7 @@ function App() {
               <p className="text-gray-700 text-lg mb-6">
                 In addition to our exceptional ales, we offer a carefully
                 curated selection of fine wines, premium gins, and a range of
-                quality beers, including Cruzcampo, Stella Artois, and Guinness.
+                quality beers, including Cruzcampo and Guinness.
                 Whatever your preference, you'll find something to perfectly
                 complement your visit.
               </p>
@@ -904,16 +887,15 @@ function App() {
               </p>
               <p className="text-gray-700 text-lg mb-6">
                 Our garden features a dedicated{" "}
-                <strong>stage for live bands</strong>, perfect for our popular
-                summer music events and festivals. Enjoy your favorite drinks
-                while listening to great music in the open air.
+                <strong>stage for live bands</strong>. We host live music events
+                both in the garden and inside the pub — check our{" "}
+                <a href="https://www.facebook.com/KingsHeadCacklebury" target="_blank" rel="noopener noreferrer" className="text-[#e6a648] hover:underline">Facebook page</a>{" "}
+                for the latest updates on upcoming bands and gigs.
               </p>
               <p className="text-gray-700 text-lg mb-6">
-                For those who prefer to smoke, we provide a{" "}
-                <strong>comfortable covered smoking area</strong> so you can
-                enjoy your time regardless of the weather. With plenty of picnic
-                benches scattered throughout the garden, there's always a spot
-                to relax with friends.
+                We have a <strong>smoking area outside</strong> for those who
+                need it. With plenty of picnic benches scattered throughout the
+                garden, there's always a spot to relax with friends.
               </p>
               <p className="text-gray-700 text-lg">
                 The secluded and fully enclosed nature of our garden makes it a{" "}
@@ -951,7 +933,7 @@ function App() {
                 starting out, you're welcome to join our practice sessions.
               </p>
               <p className="text-gray-700 text-lg">
-                Come down on <strong>Thursday evenings</strong> to watch our
+                Come down on <strong>Monday evenings</strong> to watch our
                 teams in action or speak to any team member about getting
                 involved!
               </p>
@@ -1038,7 +1020,7 @@ function App() {
                 improving their game.
               </p>
               <p className="text-gray-700 text-lg">
-                Match nights are <strong>Tuesday evenings</strong> – come along
+                Pool league match nights are <strong>Thursday evenings</strong> – come along
                 to support the team or inquire about joining. Our pool table is
                 available to all patrons throughout the week when not in use for
                 team practices.
@@ -1078,8 +1060,8 @@ function App() {
               <p className="text-gray-700 text-lg mb-6">
                 Beyond just drinks, we offer a variety of pub games including
                 pool, darts, shove ha'penny, toad-in-the-hole, dominoes,
-                cribbage, and board games to borrow. Our Sunday Quiz Night is a
-                local favorite – free entry, just for fun!
+                cribbage, and board games to borrow. Our Sunday Quiz Night kicks
+                off at <strong>7:30pm</strong> – free entry, just for fun!
               </p>
               <div className="bg-white p-4 rounded-lg mt-4">
                 <h3 className="font-semibold text-xl mb-2">Facilities</h3>
@@ -1120,51 +1102,6 @@ function App() {
                 ))}
               </Swiper>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Events Section */}
-      <section id="events" className="py-6 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-6">
-            What's On at the Pub
-          </h2>
-          <FacebookEvents limit={3} />
-        </div>
-      </section>
-
-      {/* Facebook Feed Section */}
-      <section id="facebook-feed" className="py-8 bg-[#f3df63]/10">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center gap-2 mb-8">
-            <Facebook className="text-[#e6a648] w-8 h-8" />
-            <h2 className="text-4xl font-bold text-center">
-              Latest from Our Facebook
-            </h2>
-          </div>
-
-          <FacebookPosts limit={3} />
-
-          <div className="flex flex-wrap justify-center gap-4 mt-8">
-            <a
-              href="https://www.facebook.com/KingsHeadCacklebury"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-6 py-3 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
-            >
-              <Facebook className="w-5 h-5" />
-              Visit Our Facebook Page
-            </a>
-            <a
-              href="https://www.instagram.com/kings_head_cacklebury/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#e6a648] text-white px-6 py-3 rounded-lg hover:bg-[#f3df63] hover:text-black transition-colors"
-            >
-              <Instagram className="w-5 h-5" />
-              Visit Our Instagram Page
-            </a>
           </div>
         </div>
       </section>
@@ -1229,16 +1166,6 @@ function App() {
                   </a>
                 </li>
                 <li>
-                  <a href="#events" className="hover:text-black">
-                    Events
-                  </a>
-                </li>
-                <li>
-                  <a href="#facebook-feed" className="hover:text-black">
-                    Facebook
-                  </a>
-                </li>
-                <li>
                   <a href="#contact" className="hover:text-black">
                     Contact
                   </a>
@@ -1271,7 +1198,7 @@ function App() {
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
                   <address className="not-italic">
-                    146 South Road, Hailsham, East Sussex, BN27 1AN.
+                    146 South Road, Hailsham, East Sussex, BN27 3NJ.
                   </address>
                 </li>
               </ul>
